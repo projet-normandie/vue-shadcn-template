@@ -15,7 +15,7 @@ import {
 const items = [
   {
     title: "Home",
-    url: "#",
+    url: "/",
     icon: Home,
   },
   {
@@ -50,9 +50,43 @@ const items = [
           <SidebarMenu>
             <SidebarMenuItem v-for="item in items" :key="item.title">
               <SidebarMenuButton asChild>
-                <a :href="item.url">
+                <RouterLink :to="item.url" v-if="item.url.startsWith('/')">
                   <component :is="item.icon" />
                   <span>{{item.title}}</span>
+                </RouterLink>
+                <a v-else :href="item.url">
+                  <component :is="item.icon" />
+                  <span>{{item.title}}</span>
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+
+      <!-- Section Liens utiles -->
+      <SidebarGroup class="mt-6">
+        <SidebarGroupLabel>Liens utiles</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <a href="#" class="text-sm">
+                  Documentation
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <a href="#" class="text-sm">
+                  Aide
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <a href="#" class="text-sm">
+                  Support
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
