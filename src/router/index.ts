@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
+import Register from '../views/Register.vue'
 import Profile from "@/views/Profile.vue"
 import { useAuthStore } from '../stores/auth'
 
@@ -16,6 +17,12 @@ const routes: Array<RouteRecordRaw> = [
         path: '/login',
         name: 'Login',
         component: Login,
+        meta: { guest: true }
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        component: Register,
         meta: { guest: true }
     },
     {

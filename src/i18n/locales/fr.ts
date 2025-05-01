@@ -8,6 +8,7 @@ export default {
             help: 'Aide',
             documentation: 'Documentation',
             login: 'Connexion',
+            register: 'Inscription',
             profile: 'Profil',
             settings: 'Paramètres',
             logout: 'Déconnexion'
@@ -45,7 +46,41 @@ export default {
             enterPassword: 'Entrez votre mot de passe',
             loginButton: 'Se connecter',
             loginInProgress: 'Connexion en cours...',
-            forgotPassword: 'Mot de passe oublié?'
+            forgotPassword: 'Mot de passe oublié?',
+            noAccount: 'Vous n\'avez pas de compte?',
+            registerLink: 'Inscrivez-vous'
+        },
+        register: {
+            title: 'Créer un compte',
+            subtitle: 'Inscrivez-vous pour rejoindre notre communauté',
+            email: 'Email',
+            username: 'Nom d\'utilisateur',
+            password: 'Mot de passe',
+            confirmPassword: 'Confirmer le mot de passe',
+            enterEmail: 'Entrez votre adresse email',
+            enterUsername: 'Choisissez un nom d\'utilisateur',
+            enterPassword: 'Choisissez un mot de passe',
+            enterConfirmPassword: 'Confirmez votre mot de passe',
+            registerButton: 'Créer un compte',
+            registerInProgress: 'Création du compte...',
+            alreadyHaveAccount: 'Vous avez déjà un compte?',
+            loginLink: 'Connexion',
+            validation: {
+                email: 'Veuillez entrer une adresse email valide',
+                username: 'Le nom d\'utilisateur doit contenir 3 à 20 caractères (lettres, chiffres, underscores)',
+                password: 'Le mot de passe doit contenir au moins 8 caractères avec des lettres et des chiffres',
+                passwordMatch: 'Les mots de passe ne correspondent pas'
+            },
+            success: {
+                title: 'Compte Créé',
+                description: 'Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.'
+            },
+            error: {
+                title: 'Échec de l\'inscription',
+                default: 'Une erreur est survenue lors de l\'inscription. Veuillez réessayer.',
+                usernameTaken: 'Ce nom d\'utilisateur est déjà pris',
+                emailTaken: 'Cette adresse email est déjà enregistrée'
+            }
         },
         token: {
             status: {

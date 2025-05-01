@@ -8,6 +8,7 @@ export default {
             help: 'Help',
             documentation: 'Documentation',
             login: 'Login',
+            register: 'Register',
             profile: 'Profile',
             settings: 'Settings',
             logout: 'Log out'
@@ -45,7 +46,41 @@ export default {
             enterPassword: 'Enter your password',
             loginButton: 'Login',
             loginInProgress: 'Logging in...',
-            forgotPassword: 'Forgot password?'
+            forgotPassword: 'Forgot password?',
+            noAccount: 'Don\'t have an account?',
+            registerLink: 'Register now'
+        },
+        register: {
+            title: 'Create Account',
+            subtitle: 'Sign up to join our community',
+            email: 'Email',
+            username: 'Username',
+            password: 'Password',
+            confirmPassword: 'Confirm Password',
+            enterEmail: 'Enter your email address',
+            enterUsername: 'Choose a username',
+            enterPassword: 'Choose a password',
+            enterConfirmPassword: 'Confirm your password',
+            registerButton: 'Create Account',
+            registerInProgress: 'Creating account...',
+            alreadyHaveAccount: 'Already have an account?',
+            loginLink: 'Login',
+            validation: {
+                email: 'Please enter a valid email address',
+                username: 'Username must be 3-20 characters (letters, numbers, underscores)',
+                password: 'Password must be at least 8 characters with letters and numbers',
+                passwordMatch: 'Passwords do not match'
+            },
+            success: {
+                title: 'Account Created',
+                description: 'Your account has been created successfully. You can now log in.'
+            },
+            error: {
+                title: 'Registration Failed',
+                default: 'An error occurred during registration. Please try again.',
+                usernameTaken: 'This username is already taken',
+                emailTaken: 'This email is already registered'
+            }
         },
         token: {
             status: {
