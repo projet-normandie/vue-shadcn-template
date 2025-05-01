@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useAuthStore } from '@/stores/auth'
 import { Lock, User, AlertCircle, Eye, EyeOff } from 'lucide-vue-next'
+import { useI18n } from '@/i18n'
 
 const username = ref('')
 const password = ref('')
@@ -12,6 +13,7 @@ const showPassword = ref(false)
 const rememberMe = ref(false)
 const authStore = useAuthStore()
 const router = useRouter()
+const { t } = useI18n()
 
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value
@@ -29,7 +31,7 @@ const handleLogin = async () => {
 
 <template>
   <div class="w-full max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
-    <h1 class="text-2xl font-bold text-center mb-6">Connexion</h1>
+    <h1 class="text-2xl font-bold text-center mb-6">{{ t('auth.login.title') }}</h1>
 
     <form @submit.prevent="handleLogin" class="space-y-4">
       <div v-if="authStore.getError" class="p-3 bg-red-50 text-red-700 rounded-md flex items-center gap-2">
@@ -38,7 +40,7 @@ const handleLogin = async () => {
       </div>
 
       <div class="space-y-2">
-        <label for="username" class="text-sm font-medium">Nom d'utilisateur</label>
+        <label for="username" class="text-sm font-medium">{{ t('auth.login.username') }}</label>
         <div class="relative">
           <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
             <User class="h-5 w-5" />
@@ -46,7 +48,7 @@ const handleLogin = async () => {
           <Input
               id="username"
               v-model="username"
-              placeholder="Entrez votre nom d'utilisateur"
+              :placeholder="t('auth.login.enterUsername')"
               class="pl-10"
               :disabled="authStore.isLoading"
           />
@@ -54,7 +56,7 @@ const handleLogin = async () => {
       </div>
 
       <div class="space-y-2">
-        <label for="password" class="text-sm font-medium">Mot de passe</label>
+        <label for="password" class="text-sm font-medium">{{ t('auth.login.password') }}</label>
         <div class="relative">
           <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
             <Lock class="h-5 w-5" />
@@ -63,7 +65,7 @@ const handleLogin = async () => {
               id="password"
               :type="showPassword ? 'text' : 'password'"
               v-model="password"
-              placeholder="Entrez votre mot de passe"
+              :placeholder="t('auth.login.enterPassword')"
               class="pl-10"
               :disabled="authStore.isLoading"
           />
@@ -86,7 +88,7 @@ const handleLogin = async () => {
             class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
         />
         <label for="remember-me" class="ml-2 block text-sm text-gray-700">
-          Se souvenir de moi
+          {{ t('auth.login.rememberMe') }}
         </label>
       </div>
 
@@ -97,18 +99,18 @@ const handleLogin = async () => {
       >
         <template v-if="authStore.isLoading">
           <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
-          Connexion en cours...
+          {{ t('auth.login.loginInProgress') }}
         </template>
         <template v-else>
-          Se connecter
+          {{ t('auth.login.loginButton') }}
         </template>
       </Button>
 
       <div class="text-center text-sm text-gray-500 mt-4">
-        <a href="#" class="text-primary hover:underline">Mot de passe oublié?</a>
+        <a href="#" class="text-primary hover:underline">{{ t('auth.login.forgotPassword') }}</a>
       </div>
     </form>
   </div>

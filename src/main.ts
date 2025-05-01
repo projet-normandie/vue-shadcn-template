@@ -3,6 +3,7 @@ import './assets/main.css'
 import App from './App.vue'
 import router from './router'
 import pinia from './stores'
+import i18nPlugin from './plugins/i18n'
 import authPlugin from './plugins/auth'
 import axiosInterceptor from './plugins/axios-interceptor'
 import authDirective from './directives/auth.directive'
@@ -14,6 +15,7 @@ const app = createApp(App)
     .use(authPlugin, { router })
     // Authorization directive
     .use(authDirective)
+    .use(i18nPlugin)
 
 // Setup Axios interceptors
 axiosInterceptor.setup()

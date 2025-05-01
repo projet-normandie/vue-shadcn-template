@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import * as authUtils from '@/utils/auth.utils';
+import { useI18n } from '@/i18n';
+
+const { t } = useI18n();
 
 const props = defineProps({
   requiredRole: {
@@ -21,37 +24,37 @@ const props = defineProps({
   }
 });
 
-// Vérifie si l'utilisateur a les autorisations nécessaires
+// Check if user has the necessary permissions
 const hasPermission = computed(() => {
-  // Si un rôle spécifique est requis
+  // If a specific role is required
   if (props.requiredRole) {
     return authUtils.hasRole(props.requiredRole);
   }
 
-  // Si plusieurs rôles sont requis
+  // If multiple roles are required
   if (props.requiredRoles.length > 0) {
     return props.requireAll
         ? authUtils.hasAllRoles(props.requiredRoles)
         : authUtils.hasAnyRole(props.requiredRoles);
   }
 
-  // Par défaut, considérer que l'authentification est suffisante
+  // By default, consider authentication is sufficient
   return authUtils.isAuthenticated();
 });
 </script>
 
 <template>
   <div>
-    <!-- Contenu pour les utilisateurs autorisés -->
+    <!-- Content for authorized users -->
     <template v-if="hasPermission">
       <slot></slot>
     </template>
 
-    <!-- Contenu alternatif pour les utilisateurs non autorisés -->
+    <!-- Alternative content for unauthorized users -->
     <template v-else-if="fallbackContent">
       <slot name="fallback">
         <div class="p-4 bg-gray-50 rounded-md text-gray-500 text-sm border border-gray-200">
-          Vous n'avez pas les permissions nécessaires pour afficher ce contenu.
+          {{ t('common.noPermission') }}
         </div>
       </slot>
     </template>

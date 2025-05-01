@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth';
-import { Button } from '@/components/ui/button';
 import { computed } from 'vue';
 import UserRoleStatus from '@/components/auth/UserRoleStatus.vue';
 import TokenStatus from '@/components/auth/TokenStatus.vue';
@@ -76,29 +75,6 @@ const keyRoles = [
               <div>
                 <p class="text-sm text-gray-500">Slug</p>
                 <p class="font-medium">{{ authStore.getUser.slug }}</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Informations de joueur -->
-          <div v-if="authStore.getPlayer" class="bg-white p-6 rounded-lg shadow">
-            <h2 class="text-lg font-medium mb-4">Informations de joueur</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <p class="text-sm text-gray-500">ID Joueur</p>
-                <p class="font-medium">{{ authStore.getPlayer.id }}</p>
-              </div>
-              <div>
-                <p class="text-sm text-gray-500">Slug Joueur</p>
-                <p class="font-medium">{{ authStore.getPlayer.slug }}</p>
-              </div>
-              <div>
-                <p class="text-sm text-gray-500">ID Équipe</p>
-                <p class="font-medium">{{ authStore.getPlayer.team.id }}</p>
-              </div>
-              <div>
-                <p class="text-sm text-gray-500">Nom de l'équipe</p>
-                <p class="font-medium">{{ authStore.getPlayer.team.slug }}</p>
               </div>
             </div>
           </div>
