@@ -184,22 +184,18 @@ export const useAuthStore = defineStore('auth', {
 
                 return true
             } catch (error) {
-                // If refresh fails, log the user out
-                toastService.error('Session Expired', 'Please login again')
-                this.logout()
+                // If refresh fails, log the user out but don't show notification
+                // (the interceptor will handle showing the notification)
+                this.clearAuthData()
                 return false
             }
         },
 
-         /**
-         * Logout the current user
-         * Clears tokens and user data from store and localStorage
+        /**
+         * Clear authentication data from store and localStorage
+         * Internal helper method that doesn't show notifications
          */
-        async logout() {
-            // Show notification
-            toastService.success('Logged Out', 'You have been successfully logged out')
-
-            // Clear local data
+        clearAuthData() {
             this.token = null
             this.refreshToken = null
             this.user = null
@@ -207,6 +203,20 @@ export const useAuthStore = defineStore('auth', {
             localStorage.removeItem('token')
             localStorage.removeItem('refresh_token')
             localStorage.removeItem('token_expiration')
+        },
+
+        /**
+         * Logout the current user
+         * Clears tokens and user data from store and localStorage
+         */
+        async logout(suppressNotification = false) {
+            // Show notification unless suppressed
+            if (!suppressNotification) {
+                toastService.success('Logged Out', 'You have been successfully logged out')
+            }
+
+            // Clear local data
+            this.clearAuthData()
         },
     },
     persist: true

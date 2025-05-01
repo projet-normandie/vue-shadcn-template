@@ -1,9 +1,13 @@
 import apiClient from '@/lib/axios'
 import { useAuthStore } from '@/stores/auth'
 import router from '@/router'
+import toastService from '@/services/toast.service'
 
 // Enable debug mode in development
 const DEBUG = process.env.NODE_ENV === 'development'
+
+// Flag to prevent multiple logout notifications
+let isHandlingLogout = false
 
 // Setup for request and response interceptors
 export default {
@@ -57,6 +61,7 @@ export default {
             async error => {
                 // Get the original request that caused the error
                 const originalRequest = error.config
+                const isLoginRequest = originalRequest.url?.includes('/api/login_check')
 
                 // Avoid infinite refresh loops
                 if (originalRequest._retry) {
@@ -64,14 +69,30 @@ export default {
                 }
 
                 // If the error is 401 (Unauthorized) and we have a refresh token
-                if (error.response && error.response.status === 401) {
+                // But skip this logic for login requests
+                if (error.response && error.response.status === 401 && !isLoginRequest) {
                     const authStore = useAuthStore()
 
                     // If we don't have a refresh token or the request was for a refresh token
                     if (!authStore.refreshToken || originalRequest.url === '/api/token/refresh') {
-                        // Clear auth state and redirect to login
-                        authStore.logout()
-                        router.push('/login')
+                        // Avoid showing multiple logout notifications
+                        if (!isHandlingLogout) {
+                            isHandlingLogout = true
+
+                            // Clear auth state and redirect to login
+                            await authStore.logout()
+
+                            // Show logout notification only once
+                            toastService.error('Session Expired', 'Please log in again')
+
+                            router.push('/login')
+
+                            // Reset the flag after a delay
+                            setTimeout(() => {
+                                isHandlingLogout = false
+                            }, 1000)
+                        }
+
                         return Promise.reject(error)
                     }
 
@@ -88,14 +109,44 @@ export default {
                             return apiClient(originalRequest)
                         } else {
                             // If refresh failed, logout and redirect to login
-                            authStore.logout()
-                            router.push('/login')
+                            // But avoid duplicate notifications
+                            if (!isHandlingLogout) {
+                                isHandlingLogout = true
+
+                                await authStore.logout()
+
+                                // Show logout notification only once
+                                toastService.error('Session Expired', 'Please log in again')
+
+                                router.push('/login')
+
+                                // Reset the flag after a delay
+                                setTimeout(() => {
+                                    isHandlingLogout = false
+                                }, 1000)
+                            }
+
                             return Promise.reject(error)
                         }
                     } catch (refreshError) {
                         // If there was an error refreshing the token, logout and redirect
-                        authStore.logout()
-                        router.push('/login')
+                        // But avoid duplicate notifications
+                        if (!isHandlingLogout) {
+                            isHandlingLogout = true
+
+                            await authStore.logout()
+
+                            // Show logout notification only once
+                            toastService.error('Session Expired', 'Please log in again')
+
+                            router.push('/login')
+
+                            // Reset the flag after a delay
+                            setTimeout(() => {
+                                isHandlingLogout = false
+                            }, 1000)
+                        }
+
                         return Promise.reject(refreshError)
                     }
                 }
