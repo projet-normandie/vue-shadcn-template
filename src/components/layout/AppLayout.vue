@@ -2,6 +2,9 @@
 import AppSidebar from '@/components/layout/AppSidebar.vue';
 import AppHeader from '@/components/layout/AppHeader.vue';
 import { SidebarProvider } from '@/components/ui/sidebar';
+import { useI18n } from '@/i18n';
+
+const { t } = useI18n();
 </script>
 
 <template>
@@ -17,11 +20,11 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 
       <footer class="border-t py-4 px-4 sm:px-6 w-full">
         <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-          <p>© 2025 Mon Application. Tous droits réservés.</p>
+          <p>{{ t('layout.footer.copyright') }}</p>
           <nav class="flex items-center gap-4">
-            <a href="#" class="hover:underline">Mentions légales</a>
-            <a href="#" class="hover:underline">Politique de confidentialité</a>
-            <a href="#" class="hover:underline">Contact</a>
+            <a href="#" class="hover:underline">{{ t('layout.footer.legal') }}</a>
+            <a href="#" class="hover:underline">{{ t('layout.footer.privacy') }}</a>
+            <a href="#" class="hover:underline">{{ t('layout.footer.contact') }}</a>
           </nav>
         </div>
       </footer>

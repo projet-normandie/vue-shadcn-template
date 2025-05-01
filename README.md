@@ -1,98 +1,19 @@
-# Vue.js Authentication System
+# Vue Application Template
 
-A comprehensive authentication system built with Vue.js 3, featuring JWT authentication with refresh token capabilities, role-based access control, and a modern UI.
-
-## Tech Stack
-
-- **Vue.js 3.5+** - Progressive JavaScript framework
-- **TypeScript** - Type-safe JavaScript
-- **Vite** - Fast development environment
-- **Pinia** - State management
-- **Vue Router** - Navigation and routing
-- **Axios** - API requests
-- **Tailwind CSS** - Utility-first CSS framework
-- **Shadcn-vue** - Reusable UI components
-- **Lucide Vue** - Beautiful icons
-- **Sonner** - Toast notifications
+A fully-featured Vue 3 application template with authentication, internationalization, UI components, and responsive design.
 
 ## Features
 
-### Authentication
-- JWT-based authentication
-- Automatic token refresh
-- Persistent sessions with localStorage
-- Secure login/logout flows
-- Error handling with clear user feedback
+- 🔐 **Authentication System** - JWT-based auth with auto token refresh
+- 🌐 **Internationalization (i18n)** - Multi-language support (English, French)
+- 🎨 **UI Components** - Using Shadcn/Vue and Tailwind CSS
+- 📱 **Responsive Design** - Optimized for desktop and mobile
+- 🔄 **State Management** - With Pinia
+- 🚦 **Routing** - Vue Router with protected routes
+- 🔔 **Notifications** - Toast notifications with Sonner
+- 🔧 **TypeScript** - Type-safe code
 
-### User Management
-- Role-based access control (RBAC)
-- User profile management
-- Customizable avatar with user initials
-- Session status monitoring
-
-### UI Components
-- Modern, responsive layout
-- Header with user profile dropdown
-- Sidebar navigation
-- Toast notifications
-- Role-aware content display
-
-### Security
-- Token expiration handling
-- Automatic session renewal
-- Secure API request handling
-- Protection against unauthenticated access
-
-## Project Structure
-
-```
-src/
-├── assets/            # Styles and static assets
-├── components/        # Vue components
-│   ├── auth/          # Authentication components
-│   ├── layout/        # Layout components
-│   └── ui/            # Reusable UI components
-├── directives/        # Custom Vue directives
-│   └── auth.directive.ts  # Role-based access directive
-├── lib/               # Utility libraries
-│   └── axios.ts       # Axios configuration with interceptors
-├── plugins/           # Vue plugins
-│   ├── auth.ts        # Authentication plugin
-│   └── axios-interceptor.ts  # API request interceptors
-├── router/            # Vue Router configuration
-├── services/          # API services
-│   ├── auth.service.ts        # Authentication service
-│   ├── toast.service.ts       # Notification service
-│   └── token-manager.ts       # Token refresh management
-├── stores/            # Pinia stores
-│   └── auth.ts        # Authentication state management
-├── utils/             # Utility functions
-│   └── auth.utils.ts  # Authentication helpers
-└── views/             # Application pages
-    ├── Home.vue       # Dashboard
-    ├── Login.vue      # Login page
-    └── Profile.vue    # User profile page
-```
-
-## Authentication Flow
-
-1. **Login**: User enters credentials on the login page
-2. **JWT Validation**: Server validates credentials and returns JWT and refresh tokens
-3. **Session Management**: Tokens are stored and used for authenticating subsequent requests
-4. **Token Refresh**: When the JWT expires, the system automatically refreshes it using the refresh token
-5. **Access Control**: UI components and routes are conditionally rendered based on user roles
-
-## Role-Based Access Control
-
-The system supports fine-grained access control:
-
-- **v-auth directive**: Conditionally renders UI elements based on user roles
-- **Route guards**: Protects routes requiring authentication
-- **API request authorization**: Automatically adds authorization headers to API requests
-
-## Getting Started
-
-### Installation
+## Project Setup
 
 ```bash
 # Install dependencies
@@ -100,70 +21,162 @@ npm install
 
 # Start development server
 npm run dev
-```
 
-### Environment Setup
-
-```
-# .env file
-VITE_API_URL=your_api_url
-```
-
-### Building for Production
-
-```bash
+# Build for production
 npm run build
+
+# Preview production build
+npm run preview
 ```
 
-## Usage Examples
+## Project Structure
 
-### Authentication
-
-```typescript
-// Login a user
-import { useAuthStore } from '@/stores/auth'
-
-const authStore = useAuthStore()
-await authStore.login(username, password)
+```
+src/
+├── assets/           # Static assets
+├── components/       # UI components
+│   ├── auth/         # Authentication components
+│   ├── common/       # Common components
+│   ├── layout/       # Layout components
+│   └── ui/           # Shadcn UI components
+├── directives/       # Custom Vue directives
+├── i18n/             # Internationalization
+│   ├── locales/      # Translation files
+│   └── index.ts      # i18n configuration
+├── lib/              # Utility libraries
+├── plugins/          # Vue plugins
+├── router/           # Vue Router configuration
+├── services/         # API services
+├── stores/           # Pinia stores
+├── types/            # TypeScript types
+├── utils/            # Utility functions
+└── views/            # Page components
 ```
 
-### Role-Based Content
+## Authentication System
+
+The application uses a JWT-based authentication system with automatic token refresh:
+
+- Token-based authentication with JWT
+- Automatic token refresh
+- Role-based access control
+- Protected routes
+- Token status monitoring
+
+## Internationalization (i18n)
+
+The application includes a robust internationalization system for supporting multiple languages:
+
+### Supported Languages
+
+- English (en)
+- French (fr)
+
+### Usage in Components
+
+#### Using the Composition API (recommended)
 
 ```vue
-<!-- Show content only for admins -->
-<div v-auth="'ROLE_ADMIN'">
-  Admin content here
-</div>
+<script setup lang="ts">
+import { useI18n } from '@/i18n'
 
-<!-- Show content for users with multiple roles -->
-<div v-auth.all="['ROLE_ADMIN', 'ROLE_USER']">
-  Special content here
-</div>
+const { t } = useI18n()
+</script>
+
+<template>
+  <h1>{{ t('app.name') }}</h1>
+  <p>{{ t('home.welcome') }}</p>
+</template>
 ```
 
-### Notifications
+#### Using the Global Helper
+
+```vue
+<template>
+  <h1>{{ $t('app.name') }}</h1>
+  <p>{{ $t('home.welcome') }}</p>
+</template>
+```
+
+#### Using the Directive
+
+```vue
+<template>
+  <h1 v-t="'app.name'"></h1>
+</template>
+```
+
+### Adding a New Language
+
+1. Create a new file in `src/i18n/locales/`, for example `es.ts` for Spanish
+2. Update `src/i18n/index.ts`:
+    - Import the new file
+    - Update the `SupportedLocale` type
+    - Add the new language to `translations` and `availableLocales`
 
 ```typescript
-import toastService from '@/services/toast.service'
+// src/i18n/index.ts
+import en from './locales/en'
+import fr from './locales/fr'
+import es from './locales/es'  // Import new language
 
-// Success notification
-toastService.success('Operation completed', 'Your changes have been saved')
+// Update type
+export type SupportedLocale = 'en' | 'fr' | 'es'
 
-// Error notification
-toastService.error('Error', 'Something went wrong')
+// Update available translations
+const translations: Record<SupportedLocale, Translations> = {
+  en,
+  fr,
+  es  // Add new language
+}
+
+// Add display name
+export const availableLocales: Record<SupportedLocale, string> = {
+  en: 'English',
+  fr: 'Français',
+  es: 'Español'  // Add display name
+}
 ```
 
-## Configuration
+### Best Practices
 
-### API Endpoints
+- Use a consistent key structure across all translation files
+- Organize translations in logical hierarchies
+- Always use translation functions for text, never hardcode strings
+- Regularly check all languages for missing translations
 
-The authentication system is configured to work with the following API endpoints:
+## UI Components
 
-- **Login**: POST `/api/login_check`
-- **Refresh Token**: POST `/api/token/refresh`
+The application uses the following UI libraries:
 
-You can modify these endpoints in the `auth.service.ts` file.
+- **Shadcn/Vue** - UI components based on Radix Vue
+- **Tailwind CSS** - Utility-first CSS framework
+- **Lucide Vue** - Icon components
 
-## Credits
+## Role-Based Authorization
 
-Built with [Vue.js](https://vuejs.org/), [Shadcn-vue](https://www.shadcn-vue.com/), and other open-source technologies.
+The application includes role-based authorization with:
+
+- Role-checking utility functions
+- Role-aware components with fallback content
+- Vue directive for role-based visibility control
+
+## Toast Notifications
+
+The application uses Vue Sonner for toast notifications with:
+
+- Success, error, warning, and info notifications
+- Customizable duration and content
+- Global toast service
+
+## Development
+
+### Recommended IDE Setup
+
+- [VS Code](https://code.visualstudio.com/)
+- [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+- [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin)
+
+### Type Support for `.vue` Imports in TS
+
+TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.

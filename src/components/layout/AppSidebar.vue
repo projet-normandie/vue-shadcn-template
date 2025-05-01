@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-vue-next"
+import {Home} from "lucide-vue-next"
 import {
   Sidebar,
   SidebarContent,
@@ -10,54 +10,24 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { useI18n } from '@/i18n'
 
-// Menu items.
-const items = [
-  {
-    title: "Home",
-    url: "/",
-    icon: Home,
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-];
+const { t } = useI18n()
 </script>
 
 <template>
   <Sidebar>
     <SidebarContent>
       <SidebarGroup>
-        <SidebarGroupLabel>Application</SidebarGroupLabel>
+        <SidebarGroupLabel>{{ t('layout.sidebar.title') }}</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
-            <SidebarMenuItem v-for="item in items" :key="item.title">
+            <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <RouterLink :to="item.url" v-if="item.url.startsWith('/')">
-                  <component :is="item.icon" />
-                  <span>{{item.title}}</span>
+                <RouterLink to="/">
+                  <Home />
+                  <span>{{ t('menu.home') }}</span>
                 </RouterLink>
-                <a v-else :href="item.url">
-                  <component :is="item.icon" />
-                  <span>{{item.title}}</span>
-                </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
@@ -66,27 +36,27 @@ const items = [
 
       <!-- Section Liens utiles -->
       <SidebarGroup class="mt-6">
-        <SidebarGroupLabel>Liens utiles</SidebarGroupLabel>
+        <SidebarGroupLabel>{{ t('layout.sidebar.links.title') }}</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
                 <a href="#" class="text-sm">
-                  Documentation
+                  {{ t('layout.sidebar.links.documentation') }}
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
                 <a href="#" class="text-sm">
-                  Aide
+                  {{ t('layout.sidebar.links.help') }}
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
                 <a href="#" class="text-sm">
-                  Support
+                  {{ t('layout.sidebar.links.support') }}
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
