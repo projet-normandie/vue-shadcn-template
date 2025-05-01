@@ -43,7 +43,6 @@ export default {
             password: 'Mot de passe',
             enterUsername: 'Entrez votre nom d\'utilisateur',
             enterPassword: 'Entrez votre mot de passe',
-            rememberMe: 'Se souvenir de moi',
             loginButton: 'Se connecter',
             loginInProgress: 'Connexion en cours...',
             forgotPassword: 'Mot de passe oublié?'

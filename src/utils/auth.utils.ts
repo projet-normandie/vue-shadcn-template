@@ -57,11 +57,3 @@ export function isAdmin(): boolean {
 export function isSuperAdmin(): boolean {
     return hasRole('ROLE_SUPER_ADMIN')
 }
-
-/**
- * Vérifie si l'utilisateur est un joueur (a le rôle ROLE_PLAYER)
- * @returns boolean
- */
-export function isPlayer(): boolean {
-    return hasRole('ROLE_PLAYER')
-}

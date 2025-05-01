@@ -6,6 +6,7 @@ import { useAuthStore } from '@/stores/auth';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import LanguageSelector from '@/components/common/LanguageSelector.vue';
 import { useI18n } from '@/i18n';
+import ThemeSwitcher from "@/components/common/ThemeSwitcher.vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -77,6 +78,7 @@ onMounted(() => {
 
         <!-- Language Selector -->
         <LanguageSelector />
+        <ThemeSwitcher />
 
         <!-- Login link when user is not authenticated -->
         <RouterLink
