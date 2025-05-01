@@ -7,30 +7,36 @@
       </p>
     </div>
     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      <div class="rounded-lg border p-6 shadow-sm">
-        <h3 class="font-medium mb-2">{{ t('home.features.feature1.title') }}</h3>
-        <p class="text-sm text-muted-foreground">
-          {{ t('home.features.feature1.description') }}
-        </p>
-      </div>
-      <div class="rounded-lg border p-6 shadow-sm">
-        <h3 class="font-medium mb-2">{{ t('home.features.feature2.title') }}</h3>
-        <p class="text-sm text-muted-foreground">
-          {{ t('home.features.feature2.description') }}
-        </p>
-      </div>
-      <div class="rounded-lg border p-6 shadow-sm">
-        <h3 class="font-medium mb-2">{{ t('home.features.feature3.title') }}</h3>
-        <p class="text-sm text-muted-foreground">
-          {{ t('home.features.feature3.description') }}
-        </p>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>{{ t('home.features.feature1.title') }}</CardTitle>
+          <CardDescription>{{ t('home.features.feature1.description') }}</CardDescription>
+        </CardHeader>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>{{ t('home.features.feature2.title') }}</CardTitle>
+          <CardDescription>{{ t('home.features.feature2.description') }}</CardDescription>
+        </CardHeader>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>{{ t('home.features.feature2.title') }}</CardTitle>
+          <CardDescription>{{ t('home.features.feature2.description') }}</CardDescription>
+        </CardHeader>
+      </Card>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from '@/i18n';
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 
 const { t } = useI18n();
 </script>

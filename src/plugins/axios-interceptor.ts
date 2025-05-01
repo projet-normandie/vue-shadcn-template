@@ -68,7 +68,7 @@ export default {
                     const authStore = useAuthStore()
 
                     // If we don't have a refresh token or the request was for a refresh token
-                    if (!authStore.refreshToken || originalRequest.url === '/token/refresh') {
+                    if (!authStore.refreshToken || originalRequest.url === '/api/token/refresh') {
                         // Clear auth state and redirect to login
                         authStore.logout()
                         router.push('/login')
