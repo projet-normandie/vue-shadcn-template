@@ -82,6 +82,49 @@ export default {
                 emailTaken: 'This email is already registered'
             }
         },
+        forgotPassword: {
+            title: 'Forgot Password',
+            subtitle: 'Enter your email to receive a password reset link',
+            email: 'Email',
+            enterEmail: 'Enter your email address',
+            sendResetLink: 'Send Reset Link',
+            sendingLink: 'Sending...',
+            backToLogin: 'Back to login',
+            success: {
+                title: 'Reset Link Sent',
+                description: 'Check your email for instructions to reset your password'
+            },
+            error: {
+                title: 'Error',
+                default: 'Unable to send reset link. Please try again.',
+                noEmail: 'Please enter your email address'
+            }
+        },
+        resetPassword: {
+            title: 'Reset Password',
+            subtitle: 'Enter your new password',
+            newPassword: 'New Password',
+            confirmPassword: 'Confirm Password',
+            enterNewPassword: 'Enter your new password',
+            enterConfirmPassword: 'Confirm your new password',
+            resetButton: 'Reset Password',
+            resetting: 'Resetting...',
+            validation: {
+                passwordRequired: 'Password is required',
+                passwordLength: 'Password must be at least 8 characters',
+                passwordMatch: 'Passwords do not match'
+            },
+            success: {
+                title: 'Password Reset',
+                description: 'Your password has been successfully reset. You can now login with your new password.'
+            },
+            error: {
+                title: 'Reset Failed',
+                default: 'Unable to reset password. Please try again.',
+                invalidToken: 'Invalid or expired reset token',
+                tokenRequired: 'Reset token is required'
+            }
+        },
         token: {
             status: {
                 notConnected: 'Not connected',
