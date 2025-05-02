@@ -126,7 +126,9 @@ const handleLogin = async () => {
     </CardContent>
 
     <CardFooter class="flex flex-col space-y-4">
-      <a href="#" class="text-primary text-sm hover:underline">{{ t('auth.login.forgotPassword') }}</a>
+      <RouterLink to="/forgot-password" class="text-primary text-sm hover:underline">
+        {{ t('auth.login.forgotPassword') }}
+      </RouterLink>
 
       <div class="w-full border-t pt-4">
         <p class="text-sm text-center text-muted-foreground">

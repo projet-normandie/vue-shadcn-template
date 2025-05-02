@@ -3,7 +3,9 @@ import type { RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
-import Profile from "@/views/Profile.vue"
+import Profile from '@/views/Profile.vue'
+import ForgotPassword from '@/views/ForgotPassword.vue'
+import ResetPassword from '@/views/ResetPassword.vue'
 import { useAuthStore } from '../stores/auth'
 
 
@@ -23,6 +25,18 @@ const routes: Array<RouteRecordRaw> = [
         path: '/register',
         name: 'Register',
         component: Register,
+        meta: { guest: true }
+    },
+    {
+        path: '/forgot-password',
+        name: 'ForgotPassword',
+        component: ForgotPassword,
+        meta: { guest: true }
+    },
+    {
+        path: '/reset-password',
+        name: 'ResetPassword',
+        component: ResetPassword,
         meta: { guest: true }
     },
     {

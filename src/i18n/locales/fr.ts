@@ -82,6 +82,49 @@ export default {
                 emailTaken: 'Cette adresse email est déjà enregistrée'
             }
         },
+        forgotPassword: {
+            title: 'Mot de passe oublié',
+            subtitle: 'Entrez votre email pour recevoir un lien de réinitialisation',
+            email: 'Email',
+            enterEmail: 'Entrez votre adresse email',
+            sendResetLink: 'Envoyer le lien',
+            sendingLink: 'Envoi en cours...',
+            backToLogin: 'Retour à la connexion',
+            success: {
+                title: 'Lien envoyé',
+                description: 'Vérifiez votre email pour les instructions de réinitialisation de mot de passe'
+            },
+            error: {
+                title: 'Erreur',
+                default: 'Impossible d\'envoyer le lien de réinitialisation. Veuillez réessayer.',
+                noEmail: 'Veuillez entrer votre adresse email'
+            }
+        },
+        resetPassword: {
+            title: 'Réinitialiser le mot de passe',
+            subtitle: 'Entrez votre nouveau mot de passe',
+            newPassword: 'Nouveau mot de passe',
+            confirmPassword: 'Confirmer le mot de passe',
+            enterNewPassword: 'Entrez votre nouveau mot de passe',
+            enterConfirmPassword: 'Confirmez votre nouveau mot de passe',
+            resetButton: 'Réinitialiser le mot de passe',
+            resetting: 'Réinitialisation en cours...',
+            validation: {
+                passwordRequired: 'Le mot de passe est requis',
+                passwordLength: 'Le mot de passe doit contenir au moins 8 caractères',
+                passwordMatch: 'Les mots de passe ne correspondent pas'
+            },
+            success: {
+                title: 'Mot de passe réinitialisé',
+                description: 'Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.'
+            },
+            error: {
+                title: 'Échec de la réinitialisation',
+                default: 'Impossible de réinitialiser le mot de passe. Veuillez réessayer.',
+                invalidToken: 'Le lien de réinitialisation est invalide ou a expiré',
+                tokenRequired: 'Le token de réinitialisation est requis'
+            }
+        },
         token: {
             status: {
                 notConnected: 'Non connecté',
