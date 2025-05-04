@@ -36,6 +36,22 @@ export default {
         search: 'Recherche',
         settings: 'Paramètres'
     },
+    articles: {
+        latest: 'Derniers Articles',
+        viewAll: 'Voir tout',
+        noArticles: 'Aucun article disponible',
+        backToHome: 'Retour à l\'accueil',
+        returnToHome: 'Retourner à l\'accueil',
+        error: {
+            title: 'Erreur',
+            loadFailed: 'Échec du chargement des articles',
+            invalidId: 'ID d\'article invalide'
+        },
+        notFound: {
+            title: 'Article non trouvé',
+            description: 'L\'article que vous recherchez n\'existe pas ou a été supprimé.'
+        }
+    },
     auth: {
         login: {
             title: 'Connexion',
@@ -213,5 +229,14 @@ export default {
     },
     language: {
         selector: 'Langue'
+    },
+    error: {
+        notFound: {
+            title: 'Page Non Trouvée',
+            subtitle: 'Oups ! Cette page n\'existe pas.',
+            description: 'La page que vous recherchez a peut-être été supprimée, renommée ou est temporairement indisponible.',
+            back: 'Retour',
+            home: 'Retour à l\'accueil'
+        }
     }
 }
