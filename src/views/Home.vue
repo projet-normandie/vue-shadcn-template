@@ -6,6 +6,13 @@
         {{ t('home.description') }}
       </p>
     </div>
+
+    <!-- Latest Articles Section -->
+    <div class="my-8">
+      <LatestArticles />
+    </div>
+
+
     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       <Card>
         <CardHeader>
@@ -37,6 +44,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-
+import LatestArticles from '@/components/article/LatestArticles.vue'
 const { t } = useI18n();
 </script>

@@ -36,6 +36,22 @@ export default {
         search: 'Search',
         settings: 'Settings'
     },
+    articles: {
+        latest: 'Latest Articles',
+        viewAll: 'View all',
+        noArticles: 'No articles available',
+        backToHome: 'Back to home',
+        returnToHome: 'Return to home',
+        error: {
+            title: 'Error',
+            loadFailed: 'Failed to load articles',
+            invalidId: 'Invalid article ID'
+        },
+        notFound: {
+            title: 'Article not found',
+            description: 'The article you\'re looking for doesn\'t exist or has been removed.'
+        }
+    },
     auth: {
         login: {
             title: 'Login',
@@ -213,5 +229,14 @@ export default {
     },
     language: {
         selector: 'Language'
+    },
+    error: {
+        notFound: {
+            title: 'Page Not Found',
+            subtitle: 'Oops! This page does not exist.',
+            description: 'The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.',
+            back: 'Go Back',
+            home: 'Back to Home'
+        }
     }
 }

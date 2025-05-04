@@ -6,6 +6,7 @@ import Register from '../views/Register.vue'
 import Profile from '@/views/Profile.vue'
 import ForgotPassword from '@/views/ForgotPassword.vue'
 import ResetPassword from '@/views/ResetPassword.vue'
+import NotFound from '@/views/NotFound.vue'
 import { useAuthStore } from '../stores/auth'
 
 
@@ -14,6 +15,18 @@ const routes: Array<RouteRecordRaw> = [
         path: '/',
         name: 'Home',
         component: Home
+    },
+    {
+        path: '/:slug-article-a:id(\\d+)',
+        name: 'ArticleDetail',
+        component: () => import(/* webpackChunkName: "article" */ '@/views/article/ArticleDetail.vue'),
+        props: true
+    },
+    {
+        path: '/top-week',
+        name: 'TopWeek',
+        component: () => import(/* webpackChunkName: "article" */ '@/views/TopRanking.vue'),
+        props: true
     },
     {
         path: '/login',
@@ -44,6 +57,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'Profile',
         component: Profile,
         meta: { requiresAuth: true }
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: NotFound
     }
 ]
 
