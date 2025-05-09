@@ -1,0 +1,44 @@
+kind: pipeline
+type: docker
+name: vue-deploy
+
+steps:
+  - name: install
+    image: node:20
+    commands:
+      - npm ci
+
+  - name: lint
+    image: node:20
+    commands:
+      - npm run lint
+    depends_on:
+      - install
+
+  - name: build
+    image: node:20
+    commands:
+      - npm run build-staging
+    depends_on:
+      - lint
+
+  - name: deploy
+    image: alpine:3.16
+    commands:
+      - apk add --no-cache openssh-client rsync
+      - mkdir -p ~/.ssh
+      - echo "$SSH_KEY" > ~/.ssh/id_rsa
+      - chmod 600 ~/.ssh/id_rsa
+      - ssh-keyscan -H localhost >> ~/.ssh/known_hosts
+      - rsync -avz --delete ./dist/ deploy@localhost:/home/deploy/pn/website/
+      - ssh deploy@localhost "echo 'Deploy at le $(date)' > /home/deploy/pn/website/deploy-timestamp.txt"
+      - rm -rf ~/.ssh
+    environment:
+      SSH_KEY:
+        from_secret: deploy_ssh_key
+    depends_on:
+      - build
+
+trigger:
+  branch:
+    - main
