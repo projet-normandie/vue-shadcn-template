@@ -23,19 +23,28 @@ steps:
       - lint
 
   - name: deploy
-    image: alpine:3.16
+    image: ubuntu:24.04
     commands:
-      - apk add --no-cache openssh-client rsync
+      - apt-get update
+      - apt-get install -y openssh-client rsync libssl-dev
       - mkdir -p ~/.ssh
-      - echo "$SSH_KEY" > ~/.ssh/id_rsa
-      - chmod 600 ~/.ssh/id_rsa
-      - ssh-keyscan -H localhost >> ~/.ssh/known_hosts
-      - rsync -avz --delete ./dist/ deploy@localhost:/home/deploy/pn/website/
-      - ssh deploy@localhost "echo 'Deploy at le $(date)' > /home/deploy/pn/website/deploy-timestamp.txt"
-      - rm -rf ~/.ssh
+      - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_ed25519
+      - printf "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile=/dev/null\n" > ~/.ssh/config
+      - chmod 600 ~/.ssh/id_ed25519
+      - eval $(ssh-agent -s)
+      - ssh-add ~/.ssh/id_ed25519
+      - rsync -rav --quiet --delete -e "ssh -p $STAGING_SSH_PORT" ./dist/ $STAGING_SSH_USER@$STAGING_SSH_HOST:$STAGING_PATH
     environment:
-      SSH_KEY:
-        from_secret: deploy_ssh_key
+      SSH_PRIVATE_KEY:
+        from_secret: staging_ssh_key
+      STAGING_SSH_PORT:
+        from_secret: staging_ssh_port
+      STAGING_SSH_HOST:
+        from_secret: staging_ssh_host
+      STAGING_SSH_USER:
+        from_secret: staging_ssh_user
+      STAGING_PATH:
+        from_secret: staging_path
     depends_on:
       - build
 
