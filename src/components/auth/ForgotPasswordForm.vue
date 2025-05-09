@@ -17,6 +17,7 @@ import { useI18n } from '@/i18n'
 import Spinner from '@/components/ui/Spinner.vue'
 import forgotPasswordService from '@/services/forgot-password.service'
 import toastService from '@/services/toast.service'
+import type {ApiError} from "@/types";
 
 /**
  * ForgotPasswordForm component using Shadcn Card UI
@@ -74,8 +75,9 @@ const handleSubmit = async () => {
       router.push('/login')
     }, 3000)
 
-  } catch (err: any) {
-    error.value = err.response?.data?.message || t('auth.forgotPassword.error.default')
+  } catch (err: unknown) {
+    const apiError = err as ApiError;
+    error.value = apiError.response?.data?.message || t('auth.forgotPassword.error.default')
 
     // Show error notification
     toastService.error(

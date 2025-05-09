@@ -5,13 +5,6 @@ import { Button } from '@/components/ui/button'
 import { RefreshCw } from 'lucide-vue-next'
 import { useI18n } from '@/i18n'
 
-const props = defineProps({
-  showRefreshButton: {
-    type: Boolean,
-    default: true
-  }
-})
-
 const authStore = useAuthStore()
 const { t } = useI18n()
 const refreshing = ref(false)

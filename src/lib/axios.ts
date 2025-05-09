@@ -1,5 +1,4 @@
 import axios from 'axios'
-import router from '@/router'
 import { useAuthStore } from '@/stores/auth'
 
 // Create axios instance with base configuration

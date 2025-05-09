@@ -43,7 +43,7 @@ export function useI18n() {
     // Function to get a translated value by key
     const t = (key: string): string => {
         const keys = key.split('.')
-        let value: any = translations[locale.value]
+        let value: unknown = translations[locale.value]
 
         for (const k of keys) {
             if (value && typeof value === 'object' && k in value) {

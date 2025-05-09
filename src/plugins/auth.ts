@@ -1,3 +1,4 @@
+import type { App } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { type Router } from 'vue-router'
 import tokenManager from '@/services/token-manager'
@@ -8,7 +9,7 @@ import tokenManager from '@/services/token-manager'
  * the router and token management
  */
 export default {
-    install(app: any, { router }: { router: Router }) {
+    install(_app: App, { router }: { router: Router }) {
         // Get access to the auth store
         const authStore = useAuthStore()
 
@@ -16,7 +17,7 @@ export default {
         tokenManager.setup(authStore)
 
         // Navigation guard - checks authentication before each route change
-        router.beforeEach(async (to, from, next) => {
+        router.beforeEach(async (to, _from, next) => {
             const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
 
             // If the route requires authentication and we have a token
@@ -38,7 +39,7 @@ export default {
         })
 
         // Listen for authentication state changes
-        authStore.$subscribe((mutation, state) => {
+        authStore.$subscribe((_mutation, _state) => {
             // Check token status on any auth state change
             tokenManager.checkTokenExpiration()
         })

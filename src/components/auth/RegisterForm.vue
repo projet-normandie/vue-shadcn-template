@@ -11,19 +11,12 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form'
 import { Lock, Mail, User, AlertCircle, Eye, EyeOff } from 'lucide-vue-next'
 import { useI18n } from '@/i18n'
 import Spinner from '@/components/ui/Spinner.vue'
 import useRegisterService from '@/services/register.service'
 import toastService from '@/services/toast.service'
+import type {ApiError} from "@/types";
 
 /**
  * RegisterForm component using Shadcn Card UI
@@ -35,7 +28,6 @@ const email = ref('')
 const username = ref('')
 const password = ref('')
 const confirmPassword = ref('')
-const pseudoVgr = ref('')
 const showPassword = ref(false)
 const showConfirmPassword = ref(false)
 const loading = ref(false)
@@ -135,8 +127,9 @@ const handleRegister = async () => {
 
     // Redirect to login page
     router.push('/login')
-  } catch (err: any) {
-    error.value = err.response?.data?.message || t('auth.register.error.default')
+  } catch (err: unknown) {
+    const apiError = err as ApiError;
+    error.value = apiError.response?.data?.message || t('auth.register.error.default')
 
     // Show error notification
     toastService.error(

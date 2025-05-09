@@ -1,5 +1,5 @@
 import { useAuthStore } from '@/stores/auth'
-import type { Directive, DirectiveBinding } from 'vue'
+import type {App, Directive, DirectiveBinding} from 'vue'
 
 /**
  * Directive pour vérifier les autorisations basées sur les rôles
@@ -51,7 +51,7 @@ export const vAuth: Directive<HTMLElement, string | string[]> = {
 
 // Plugin d'authentification pour Vue
 export default {
-    install(app: any) {
+    install(app: App) {
         app.directive('auth', vAuth)
     }
 }

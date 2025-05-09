@@ -9,6 +9,11 @@ interface RegisterData {
     plainPassword: string
 }
 
+interface RegisterResponse {
+    username: string
+    email: string
+}
+
 /**
  * Registration service
  * Handles user registration API requests
@@ -19,8 +24,8 @@ class RegisterService {
      * @param userData User registration data
      * @returns Promise with the API response
      */
-    async register(userData: RegisterData): Promise<any> {
-        const response = await apiClient.post('/api/users', userData)
+    async register(userData: RegisterData): Promise<RegisterResponse> {
+        const response = await apiClient.post<RegisterResponse>('/api/users', userData)
         return response.data
     }
 }

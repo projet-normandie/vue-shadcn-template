@@ -1,4 +1,5 @@
 import apiClient from '@/lib/axios'
+import type {User} from "@/types/auth.ts";
 
 interface LoginCredentials {
     username: string
@@ -8,8 +9,7 @@ interface LoginCredentials {
 interface LoginResponse {
     token: string
     refresh_token: string
-    user: any
-    player: any
+    user: User
 }
 
 interface RefreshTokenResponse {

@@ -1,16 +1,8 @@
 import { defineStore } from 'pinia'
 import authService from '@/services/auth.service'
 import toastService from '@/services/toast.service'
-
-/**
- * User interface representing authenticated user data
- */
-interface User {
-    id: number
-    username: string
-    roles: string[]
-    slug: string
-}
+import type { User } from '@/types/auth.ts'
+import type { ApiError } from '@/types';
 
 /**
  * Authentication state interface
@@ -99,8 +91,9 @@ export const useAuthStore = defineStore('auth', {
                 toastService.success('Login Successful', `Welcome, ${response.user.username}!`)
 
                 return true
-            } catch (error: any) {
-                this.error = error.response?.data?.message || 'An error occurred during login'
+            } catch (error: unknown) {
+                const apiError = error as ApiError;
+                this.error = apiError.response?.data?.message || 'An error occurred during login'
 
                 // Show error notification
                 toastService.error('Login Failed', this.error)
@@ -125,7 +118,7 @@ export const useAuthStore = defineStore('auth', {
                 }).join(''))
 
                 return JSON.parse(jsonPayload)
-            } catch (e) {
+            } catch (_e) {
                 return null
             }
         },
@@ -183,7 +176,7 @@ export const useAuthStore = defineStore('auth', {
                 })
 
                 return true
-            } catch (error) {
+            } catch (_error) {
                 // If refresh fails, log the user out but don't show notification
                 // (the interceptor will handle showing the notification)
                 this.clearAuthData()

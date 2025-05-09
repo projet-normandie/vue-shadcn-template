@@ -19,7 +19,7 @@ const toggleDropdown = () => {
 };
 
 // Close dropdown when clicking outside
-const closeDropdown = (e: MouseEvent) => {
+const closeDropdown = (_e: MouseEvent) => {
   if (showDropdown.value) {
     showDropdown.value = false;
   }

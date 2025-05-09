@@ -26,7 +26,7 @@ class ForgotPasswordService {
      * @param data Object containing email address
      * @returns Promise with the API response
      */
-    async sendPasswordResetLink(data: ForgotPasswordRequest): Promise<any> {
+    async sendPasswordResetLink(data: ForgotPasswordRequest): Promise<unknown> {
         const response = await apiClient.post('/api/security/send-password-reset-link', data)
         return response.data
     }
@@ -36,7 +36,7 @@ class ForgotPasswordService {
      * @param data Object containing reset token and new password
      * @returns Promise with the API response
      */
-    async confirmPasswordReset(data: ResetPasswordRequest): Promise<any> {
+    async confirmPasswordReset(data: ResetPasswordRequest): Promise<unknown> {
         const response = await apiClient.post('/api/security/confirm-password', data)
         return response.data
     }
