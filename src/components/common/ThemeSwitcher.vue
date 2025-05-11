@@ -16,6 +16,6 @@ watchEffect(() => mode.value = state.value)
 <template>
   <button class="cursor-pointer" @click="next()">
     <Sun v-if="state === 'dark'" class="align-middle" :size="20" />
-    <Moon v-if="state === 'light'" class="align-middle" :size="20" />
+    <Moon v-else class="align-middle" :size="20" />
   </button>
 </template>
