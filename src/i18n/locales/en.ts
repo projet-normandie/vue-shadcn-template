@@ -52,6 +52,39 @@ export default {
             description: 'The article you\'re looking for doesn\'t exist or has been removed.'
         }
     },
+    comments: {
+        title: 'Comments',
+        show: 'Show comments',
+        hide: 'Hide comments',
+        empty: 'No comments yet. Be the first to share your thoughts!',
+        loadMore: 'Load more comments',
+        edited: 'edited',
+        loginRequired: 'You need to be logged in to post a comment.',
+        loginLink: 'Log in',
+        form: {
+            content: 'Your comment',
+            placeholder: 'Share your thoughts about this article...',
+            submit: 'Post comment',
+            submitting: 'Posting...'
+        },
+        actions: {
+            edit: 'Edit',
+            save: 'Save changes',
+            cancel: 'Cancel'
+        },
+        success: {
+            title: 'Success',
+            added: 'Your comment has been posted.',
+            updated: 'Your comment has been updated.'
+        },
+        error: {
+            title: 'Error',
+            default: 'An error occurred. Please try again.',
+            loadFailed: 'Failed to load comments.',
+            updateFailed: 'Failed to update comment.',
+            notAuthorized: 'You are not authorized to edit this comment.'
+        }
+    },
     auth: {
         login: {
             title: 'Login',

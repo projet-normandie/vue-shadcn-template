@@ -52,6 +52,39 @@ export default {
             description: 'L\'article que vous recherchez n\'existe pas ou a été supprimé.'
         }
     },
+    comments: {
+        title: 'Commentaires',
+        show: 'Afficher les commentaires',
+        hide: 'Masquer les commentaires',
+        empty: 'Aucun commentaire pour le moment. Soyez le premier à partager votre avis !',
+        loadMore: 'Charger plus de commentaires',
+        edited: 'modifié',
+        loginRequired: 'Vous devez être connecté pour poster un commentaire.',
+        loginLink: 'Se connecter',
+        form: {
+            content: 'Votre commentaire',
+            placeholder: 'Partagez votre avis sur cet article...',
+            submit: 'Poster le commentaire',
+            submitting: 'Envoi en cours...'
+        },
+        actions: {
+            edit: 'Modifier',
+            save: 'Enregistrer les modifications',
+            cancel: 'Annuler'
+        },
+        success: {
+            title: 'Succès',
+            added: 'Votre commentaire a été publié.',
+            updated: 'Votre commentaire a été mis à jour.'
+        },
+        error: {
+            title: 'Erreur',
+            default: 'Une erreur est survenue. Veuillez réessayer.',
+            loadFailed: 'Échec du chargement des commentaires.',
+            updateFailed: 'Échec de la mise à jour du commentaire.',
+            notAuthorized: 'Vous n\'êtes pas autorisé à modifier ce commentaire.'
+        }
+    },
     auth: {
         login: {
             title: 'Connexion',

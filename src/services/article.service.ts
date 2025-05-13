@@ -5,6 +5,7 @@ import apiClient from '@/lib/axios'
  * Article interface based on API response
  */
 export interface Article {
+    '@id': string     // IRI for this article (e.g., '/api/articles/1')
     id: number
     title: string
     content: string
