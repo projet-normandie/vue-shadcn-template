@@ -9,6 +9,8 @@ import { useI18n } from '@/i18n'
 import articleService, { type Article } from '@/services/article.service'
 import Spinner from '@/components/ui/Spinner.vue'
 import toastService from '@/services/toast.service'
+import CommentForm from '@/components/article/CommentForm.vue'
+import CommentList from '@/components/article/CommentList.vue'
 
 const route = useRoute()
 const article = ref<Article | null>(null)
@@ -26,7 +28,22 @@ const formatDate = (dateString: string) => {
   })
 }
 
+/**
+ * Handle comment added event to refresh comments list
+ */
+const handleCommentAdded = () => {
+  // Refresh comments
+  if (commentListRef.value && typeof commentListRef.value.loadComments === 'function') {
+    console.log('Refreshing comment list...');
 
+    commentListRef.value.loadComments(1, true);
+  } else {
+    console.warn('CommentList reference or loadComments method not available');
+  }
+}
+
+// Reference to the CommentList component for method calls
+const commentListRef = ref(null)
 
 /**
  * Fetch article details
@@ -36,22 +53,30 @@ const fetchArticle = async () => {
 
   if (!id) {
     toastService.error(t('articles.error.title'), t('articles.error.invalidId'))
-    return
+    return Promise.reject(new Error('Invalid article ID'));
   }
 
   loading.value = true
   try {
     article.value = await articleService.getArticle(parseInt(id))
+    return article.value;
   } catch (error) {
     console.error('Failed to fetch article:', error)
     toastService.error(t('articles.error.title'), t('articles.error.loadFailed'))
+    return Promise.reject(error);
   } finally {
     loading.value = false
   }
 }
 
 onMounted(() => {
-  fetchArticle()
+  fetchArticle().then(() => {
+    setTimeout(() => {
+      if (commentListRef.value && typeof commentListRef.value.loadComments === 'function') {
+        commentListRef.value.loadComments(1);
+      }
+    }, 100);
+  });
 })
 </script>
 
@@ -102,6 +127,21 @@ onMounted(() => {
           <div v-html="article.content"></div>
         </CardContent>
       </Card>
+
+      <!-- Comments section -->
+      <div class="mt-8 space-y-6">
+        <!-- Comment form -->
+        <CommentForm
+            :article-iri="article?.['@id'] || `/api/articles/${route.params.id}`"
+            @comment-added="handleCommentAdded"
+        />
+
+        <!-- Comments list -->
+        <CommentList
+            ref="commentListRef"
+            :article-id="parseInt(route.params.id as string)"
+        />
+      </div>
     </article>
 
     <!-- Error state -->
