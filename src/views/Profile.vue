@@ -1,17 +1,27 @@
+// src/views/Profile.vue
 <script setup lang="ts">
+import { ref, computed } from 'vue';
 import { useAuthStore } from '@/stores/auth';
-import { computed } from 'vue';
-import UserRoleStatus from '@/components/auth/UserRoleStatus.vue';
-import TokenStatus from '@/components/auth/TokenStatus.vue';
-import { Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
 import { useI18n } from '@/i18n';
+import {
+  Card,
+  CardContent,
+} from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { User, Upload } from 'lucide-vue-next';
+import ProfileInfoTab from '@/components/profile/ProfileInfoTab.vue';
+import ProfileAvatarTab from '@/components/profile/ProfileAvatarTab.vue';
+import UserRoleStatus from '@/components/auth/UserRoleStatus.vue';
+import UserAvatar from '@/components/user/UserAvatar.vue';
 
+// Get stores and translations
 const authStore = useAuthStore();
 const { t } = useI18n();
 
-/**
- * Format token expiration date for display
- */
+// Current active tab
+const activeTab = ref('info');
+
+// Computed property to format token expiration date
 const tokenExpirationDate = computed(() => {
   if (!authStore.tokenExpiration) return t('auth.token.status.unavailable');
 
@@ -19,154 +29,78 @@ const tokenExpirationDate = computed(() => {
   return date.toLocaleString();
 });
 
-/**
- * Check if user has a specific role
- * @param role Role to check
- * @returns boolean
- */
-const hasRole = (role: string): boolean => {
-  if (!authStore.user || !authStore.user.roles) return false;
-  return authStore.user.roles.includes(role);
-};
+// Check if token is expired
+const isTokenExpired = computed(() => {
+  return authStore.isTokenExpired;
+});
 
 /**
- * Key roles for display in UI
+ * Handle profile info update
  */
-const keyRoles = [
-  'ROLE_SUPER_ADMIN',
-  'ROLE_ADMIN',
-  'ROLE_USER',
-];
+const handleProfileUpdate = () => {
+  // Refresh user data if needed
+  if (typeof authStore.refreshUserData === 'function') {
+    authStore.refreshUserData();
+  }
+};
 </script>
 
 <template>
   <div>
-    <div class="mb-6">
-      <h1 class="text-2xl font-bold">{{ t('auth.profile.title') }}</h1>
-      <p class="text-gray-500">{{ t('auth.profile.subtitle') }}</p>
+    <div class="mb-6 flex justify-between items-center">
+      <div>
+        <h1 class="text-2xl font-bold">{{ t('profile.title') }}</h1>
+        <p class="text-gray-500">{{ t('profile.subtitle') }}</p>
+      </div>
+      <UserAvatar size="lg" bordered />
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Main column -->
+      <!-- Main content - tabs -->
       <div class="lg:col-span-2 space-y-6">
-        <div v-if="authStore.getUser" class="space-y-6">
-          <!-- Authentication Info Card -->
-          <Card>
-            <CardHeader class="flex flex-row items-center justify-between">
-              <CardTitle>{{ t('auth.profile.sections.authentication') }}</CardTitle>
-              <TokenStatus />
-            </CardHeader>
-            <CardContent>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <p class="text-sm text-muted-foreground">{{ t('auth.profile.fields.tokenStatus') }}</p>
-                  <p class="font-medium" :class="{'text-green-600': !authStore.isTokenExpired, 'text-red-600': authStore.isTokenExpired}">
-                    {{ authStore.isTokenExpired ? t('auth.token.status.expired') : t('auth.token.status.valid') }}
-                  </p>
-                </div>
-                <div>
-                  <p class="text-sm text-muted-foreground">{{ t('auth.profile.fields.tokenExpiration') }}</p>
-                  <p class="font-medium">{{ tokenExpirationDate }}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        <Card>
+          <CardContent class="pt-6">
+            <Tabs v-model="activeTab" class="w-full">
+              <TabsList class="grid w-full grid-cols-2 mb-6">
+                <TabsTrigger value="info" @click="activeTab = 'info'">
+                  <User class="mr-2 h-4 w-4" />
+                  {{ t('profile.tabs.info') }}
+                </TabsTrigger>
+                <TabsTrigger value="avatar" @click="activeTab = 'avatar'">
+                  <Upload class="mr-2 h-4 w-4" />
+                  {{ t('profile.tabs.avatar') }}
+                </TabsTrigger>
+              </TabsList>
 
-          <!-- Account Info Card -->
-          <Card>
-            <CardHeader>
-              <CardTitle>{{ t('auth.profile.sections.account') }}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <p class="text-sm text-muted-foreground">{{ t('auth.profile.fields.id') }}</p>
-                  <p class="font-medium">{{ authStore.getUser.id }}</p>
-                </div>
-                <div>
-                  <p class="text-sm text-muted-foreground">{{ t('auth.profile.fields.username') }}</p>
-                  <p class="font-medium">{{ authStore.getUser.username }}</p>
-                </div>
-                <div>
-                  <p class="text-sm text-muted-foreground">{{ t('auth.profile.fields.slug') }}</p>
-                  <p class="font-medium">{{ authStore.getUser.slug }}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              <TabsContent value="info" class="mt-0">
+                <ProfileInfoTab @profile-updated="handleProfileUpdate" />
+              </TabsContent>
 
-          <!-- Roles Card -->
-          <Card>
-            <CardHeader>
-              <CardTitle>{{ t('auth.profile.sections.roles') }}</CardTitle>
-            </CardHeader>
-            <CardContent class="space-y-4">
-              <!-- Main roles -->
-              <div>
-                <h3 class="text-sm font-medium text-muted-foreground mb-2">{{ t('auth.profile.fields.mainRoles') }}</h3>
-                <div class="flex flex-wrap gap-2">
-                  <div
-                      v-for="role in keyRoles"
-                      :key="role"
-                      class="px-3 py-1 rounded-full text-sm"
-                      :class="hasRole(role) ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'"
-                  >
-                    {{ role.replace('ROLE_', '') }}
-                    <span v-if="hasRole(role)" class="ml-1">✓</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- All roles -->
-              <div>
-                <h3 class="text-sm font-medium text-muted-foreground mb-2">
-                  {{ t('auth.profile.fields.allRoles') }} ({{ authStore.getUser.roles.length }})
-                </h3>
-                <div class="p-3 rounded-md max-h-64 overflow-y-auto">
-                  <div
-                      v-for="role in authStore.getUser.roles"
-                      :key="role"
-                      class="px-2 py-1 mb-1 text-xs font-mono rounded"
-                  >
-                    {{ role }}
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <!-- Loading state -->
-        <div v-else class="flex items-center justify-center p-12">
-          <div class="animate-spin h-10 w-10 border-4 border-primary border-t-transparent rounded-full"></div>
-        </div>
+              <TabsContent value="avatar" class="mt-0">
+                <ProfileAvatarTab @avatar-updated="handleProfileUpdate" />
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
       </div>
 
       <!-- Sidebar -->
       <div class="lg:col-span-1 space-y-6">
-        <!-- User Role Status Component -->
         <UserRoleStatus />
 
-        <!-- Quick Links Card -->
         <Card>
-          <CardHeader>
-            <CardTitle>{{ t('auth.profile.links.quickLinks') }}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <nav class="space-y-2">
-              <RouterLink to="/" class="block p-2 rounded-md text-sm">
-                {{ t('auth.profile.links.dashboard') }}
-              </RouterLink>
-              <a href="#" class="block p-2 rounded-md text-sm">
-                {{ t('auth.profile.links.editProfile') }}
-              </a>
-              <a href="#" class="block p-2 rounded-md text-sm">
-                {{ t('auth.profile.links.changePassword') }}
-              </a>
-              <a href="#" class="block p-2 rounded-md text-sm text-red-600 hover:text-red-700">
-                {{ t('auth.profile.links.deleteAccount') }}
-              </a>
-            </nav>
+          <CardContent class="pt-6">
+            <div class="flex flex-col space-y-1 mb-4">
+              <h3 class="font-medium">{{ t('profile.authentication.title') }}</h3>
+
+              <div class="flex items-center gap-2">
+                <span class="h-3 w-3 rounded-full" :class="isTokenExpired ? 'bg-red-500' : 'bg-green-500'"></span>
+                <span class="text-sm whitespace-nowrap">
+                  {{ isTokenExpired ? t('auth.token.status.expired') : t('auth.token.status.valid') }}
+                </span>
+                <span class="text-xs text-muted-foreground whitespace-nowrap">{{ tokenExpirationDate }}</span>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
