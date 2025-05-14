@@ -7,6 +7,7 @@ import { SidebarTrigger } from '@/components/ui/sidebar';
 import LanguageSelector from '@/components/common/LanguageSelector.vue';
 import { useI18n } from '@/i18n';
 import ThemeSwitcher from "@/components/common/ThemeSwitcher.vue";
+import UserAvatar from '@/components/user/UserAvatar.vue';
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -31,12 +32,6 @@ const handleLogout = async () => {
   router.push('/login');
   showDropdown.value = false;
 };
-
-// User initials for avatar
-const userInitials = computed(() => {
-  if (!authStore.user) return '?';
-  return authStore.user.username.substring(0, 2).toUpperCase();
-});
 
 // User display name
 const userDisplayName = computed(() => {
@@ -94,10 +89,10 @@ onMounted(() => {
         <div v-else class="relative">
           <button
               @click.stop="toggleDropdown"
-              class="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center hover:bg-primary/30 transition-colors focus:outline-none cursor-pointer"
+              class="focus:outline-none cursor-pointer"
               aria-label="Menu utilisateur"
           >
-            <span class="text-sm font-medium">{{ userInitials }}</span>
+            <UserAvatar size="md" bordered />
           </button>
           <!-- Dropdown menu -->
           <div
@@ -105,9 +100,12 @@ onMounted(() => {
               class="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-800 border"
           >
             <div class="p-2">
-              <div class="px-4 py-2 border-b">
-                <p class="font-medium">{{ userDisplayName }}</p>
-                <p class="text-xs text-muted-foreground">{{ userSubtitle }}</p>
+              <div class="px-4 py-2 border-b flex items-center gap-3">
+                <UserAvatar size="sm" />
+                <div>
+                  <p class="font-medium">{{ userDisplayName }}</p>
+                  <p class="text-xs text-muted-foreground">{{ userSubtitle }}</p>
+                </div>
               </div>
 
               <div class="py-1">
