@@ -5,7 +5,8 @@ import apiClient from '@/lib/axios'
  * Interface for forgot password request
  */
 interface ForgotPasswordRequest {
-    email: string
+    email: string,
+    callBackUrl: string
 }
 
 /**
@@ -27,7 +28,7 @@ class ForgotPasswordService {
      * @returns Promise with the API response
      */
     async sendPasswordResetLink(data: ForgotPasswordRequest): Promise<unknown> {
-        const response = await apiClient.post('/api/security/send-password-reset-link', data)
+        const response = await apiClient.post('/api/users/reset-password/send-link', data)
         return response.data
     }
 
@@ -37,7 +38,7 @@ class ForgotPasswordService {
      * @returns Promise with the API response
      */
     async confirmPasswordReset(data: ResetPasswordRequest): Promise<unknown> {
-        const response = await apiClient.post('/api/security/confirm-password', data)
+        const response = await apiClient.post('/api/users/reset-password/confirm', data)
         return response.data
     }
 }
