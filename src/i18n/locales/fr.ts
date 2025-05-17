@@ -237,7 +237,8 @@ export default {
         subtitle: 'Gérez vos paramètres de compte et vos préférences',
         tabs: {
             info: 'Informations personnelles',
-            avatar: 'Photo de profil'
+            avatar: 'Photo de profil',
+            password: 'Mot de passe'
         },
         fields: {
             username: 'Nom d\'utilisateur',
@@ -266,6 +267,41 @@ export default {
             save: 'Enregistrer les modifications',
             saving: 'Enregistrement...',
             cancel: 'Annuler'
+        },
+        password: {
+            fields: {
+                current: 'Mot de passe actuel',
+                new: 'Nouveau mot de passe',
+                confirm: 'Confirmer le nouveau mot de passe'
+            },
+            placeholders: {
+                current: 'Entrez votre mot de passe actuel',
+                new: 'Entrez votre nouveau mot de passe',
+                confirm: 'Confirmez votre nouveau mot de passe'
+            },
+            descriptions: {
+                requirements: 'Le mot de passe doit contenir au moins 8 caractères avec des lettres et des chiffres'
+            },
+            validation: {
+                currentRequired: 'Le mot de passe actuel est requis',
+                newLength: 'Le nouveau mot de passe doit contenir au moins 8 caractères',
+                newLetters: 'Le nouveau mot de passe doit contenir au moins une lettre',
+                newNumbers: 'Le nouveau mot de passe doit contenir au moins un chiffre',
+                passwordMatch: 'Les mots de passe ne correspondent pas'
+            },
+            buttons: {
+                change: 'Changer de mot de passe',
+                changing: 'Changement en cours...'
+            },
+            success: {
+                title: 'Mot de passe changé',
+                changed: 'Votre mot de passe a été changé avec succès'
+            },
+            error: {
+                title: 'Erreur',
+                changeFailed: 'Échec du changement de mot de passe. Veuillez vérifier votre mot de passe actuel et réessayer.',
+                validationFailed: 'Échec de validation du mot de passe'
+            }
         },
         avatar: {
             currentAvatar: 'Photo de profil actuelle',

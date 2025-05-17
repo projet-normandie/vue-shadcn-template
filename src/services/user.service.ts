@@ -2,6 +2,7 @@
 import apiClient from '@/lib/axios'
 import type { User } from '@/types/auth'
 
+
 /**
  * Extended User interface with additional profile data
  */
