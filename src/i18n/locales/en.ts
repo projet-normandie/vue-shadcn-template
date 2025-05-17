@@ -237,7 +237,8 @@ export default {
         subtitle: 'Manage your account settings and preferences',
         tabs: {
             info: 'Personal Information',
-            avatar: 'Profile Picture'
+            avatar: 'Profile Picture',
+            password: 'Password'
         },
         fields: {
             username: 'Username',
@@ -266,6 +267,41 @@ export default {
             save: 'Save Changes',
             saving: 'Saving...',
             cancel: 'Cancel'
+        },
+        password: {
+            fields: {
+                current: 'Current Password',
+                new: 'New Password',
+                confirm: 'Confirm New Password'
+            },
+            placeholders: {
+                current: 'Enter your current password',
+                new: 'Enter your new password',
+                confirm: 'Confirm your new password'
+            },
+            descriptions: {
+                requirements: 'Password must be at least 8 characters with letters and numbers'
+            },
+            validation: {
+                currentRequired: 'Current password is required',
+                newLength: 'New password must be at least 8 characters',
+                newLetters: 'New password must contain at least one letter',
+                newNumbers: 'New password must contain at least one number',
+                passwordMatch: 'Passwords do not match'
+            },
+            buttons: {
+                change: 'Change Password',
+                changing: 'Changing Password...'
+            },
+            success: {
+                title: 'Password Changed',
+                changed: 'Your password has been changed successfully'
+            },
+            error: {
+                title: 'Error',
+                changeFailed: 'Failed to change password. Please check your current password and try again.',
+                validationFailed: 'Password validation failed'
+            }
         },
         avatar: {
             currentAvatar: 'Current Profile Picture',
