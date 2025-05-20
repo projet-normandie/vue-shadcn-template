@@ -3,6 +3,7 @@ import { computed, watch } from 'vue'
 import { useStorage } from '@vueuse/core'
 import en from './locales/en'
 import fr from './locales/fr'
+import { updateApiLocale } from '@/lib/axios'
 
 // Define the supported languages
 export type SupportedLocale = 'en' | 'fr'
@@ -38,6 +39,9 @@ export function useI18n() {
     // Watch for locale changes to update document lang attribute
     watch(locale, (newLocale) => {
         document.documentElement.setAttribute('lang', newLocale)
+
+        // Update API locale for Axios requests
+        updateApiLocale(newLocale)
     }, { immediate: true })
 
     // Function to get a translated value by key
