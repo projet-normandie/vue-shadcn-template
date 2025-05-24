@@ -62,10 +62,15 @@ export default {
         loginRequired: 'You need to be logged in to post a comment.',
         loginLink: 'Log in',
         form: {
+            title: 'Add a Comment',
             content: 'Your comment',
             placeholder: 'Share your thoughts about this article...',
             submit: 'Post comment',
-            submitting: 'Posting...'
+            submitting: 'Posting...',
+            clear: 'Clear',
+            minCharacters: 'Minimum 3 characters required',
+            characters: 'characters',
+            helpText: 'You can use basic formatting: bold, italic, lists, and links.'
         },
         actions: {
             edit: 'Edit',

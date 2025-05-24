@@ -62,10 +62,15 @@ export default {
         loginRequired: 'Vous devez être connecté pour poster un commentaire.',
         loginLink: 'Se connecter',
         form: {
+            title: 'Ajouter un commentaire',
             content: 'Votre commentaire',
             placeholder: 'Partagez votre avis sur cet article...',
             submit: 'Poster le commentaire',
-            submitting: 'Envoi en cours...'
+            submitting: 'Envoi en cours...',
+            clear: 'Effacer',
+            minCharacters: 'Minimum 3 caractères requis',
+            characters: 'caractères',
+            helpText: 'Vous pouvez utiliser la mise en forme de base : gras, italique, listes et liens.'
         },
         actions: {
             edit: 'Modifier',

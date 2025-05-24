@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Home} from "lucide-vue-next"
+import {Home, FileText} from "lucide-vue-next"
 import {
   Sidebar,
   SidebarContent,
@@ -39,6 +39,14 @@ const { t } = useI18n()
         <SidebarGroupLabel>{{ t('layout.sidebar.links.title') }}</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <RouterLink to="/quill-test">
+                  <FileText />
+                  <span>Quill Editor Test</span>
+                </RouterLink>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
                 <a href="#" class="text-sm">

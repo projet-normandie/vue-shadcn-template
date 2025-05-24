@@ -3,13 +3,24 @@
 import { ref, computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import { QuillEditor } from '@/components/ui/editor'
 import { useAuthStore } from '@/stores/auth'
 import { useI18n } from '@/i18n'
 import toastService from '@/services/toast.service'
 import commentService, { type CommentFormData } from '@/services/comment.service'
 import Spinner from '@/components/ui/Spinner.vue'
-import { AlertCircle } from 'lucide-vue-next'
+import { AlertCircle, MessageSquare } from 'lucide-vue-next'
 import type { ApiError } from '@/types'
+
+/**
+ * Quill Editor Instance Interface
+ */
+interface QuillEditorInstance {
+  getHTML: () => string
+  getText: () => string
+  focus: () => void
+  setContents: (delta: unknown[]) => void
+}
 
 /**
  * Props for the CommentForm component
@@ -34,8 +45,10 @@ const { t } = useI18n()
 
 // Form state
 const content = ref('')
+const plainTextContent = ref('')
 const isSubmitting = ref(false)
 const error = ref<string | null>(null)
+const editorRef = ref<QuillEditorInstance | null>(null)
 
 /**
  * Check if user is authenticated
@@ -48,8 +61,33 @@ const isAuthenticated = computed(() => {
  * Check if form is valid
  */
 const isValid = computed(() => {
-  return content.value.trim().length >= 3
+  console.log(editorRef.value?.getHTML())
+  if (!content.value) return false
+
+  // Get plain text from editor to validate actual content length
+  const plainText = editorRef.value?.getText()?.trim() || ''
+  return plainText.length >= 3
 })
+
+/**
+ * Get character count for display
+ */
+const characterCount = computed(() => {
+  return (plainTextContent.value || '').length
+})
+
+/**
+ * Handle editor ready event
+ */
+const onEditorReady = () => {
+  console.log('Comment editor ready')
+  // Focus the editor when it's ready if user is authenticated
+  if (isAuthenticated.value) {
+    setTimeout(() => {
+      editorRef.value?.focus()
+    }, 100)
+  }
+}
 
 /**
  * Handle form submission
@@ -61,12 +99,12 @@ const handleSubmit = async () => {
   error.value = null
 
   try {
-    const articleIri = props.articleIri;
+    const articleIri = props.articleIri
 
     console.log('Submitting comment with data:', {
       content: content.value.trim(),
       article: articleIri
-    });
+    })
 
     const commentData: CommentFormData = {
       content: content.value.trim(),
@@ -77,6 +115,16 @@ const handleSubmit = async () => {
 
     // Reset form
     content.value = ''
+    plainTextContent.value = ''
+
+    // Check if editor is available before calling methods
+    if (editorRef.value && typeof editorRef.value.setContents === 'function') {
+      try {
+        editorRef.value.setContents([]) // Clear Quill editor content
+      } catch (error) {
+        console.warn('Error clearing editor after submit:', error)
+      }
+    }
 
     // Show success notification
     toastService.success(
@@ -87,7 +135,7 @@ const handleSubmit = async () => {
     // Emit event to parent
     emit('comment-added')
   } catch (err: unknown) {
-    console.error('Error submitting comment:', err);
+    console.error('Error submitting comment:', err)
 
     const apiError = err as ApiError
     error.value = apiError.response?.data?.message || t('comments.error.default')
@@ -101,11 +149,35 @@ const handleSubmit = async () => {
     isSubmitting.value = false
   }
 }
+
+/**
+ * Clear the editor content
+ */
+const clearContent = () => {
+  content.value = ''
+  plainTextContent.value = '' // Reset aussi le texte brut
+
+  // Check if editor is available before calling methods
+  if (editorRef.value && typeof editorRef.value.setContents === 'function') {
+    try {
+      editorRef.value.setContents([])
+    } catch (error) {
+      console.warn('Error clearing editor content:', error)
+    }
+  }
+  error.value = null
+}
 </script>
 
 <template>
   <Card>
     <CardContent class="pt-6">
+      <!-- Header -->
+      <div class="flex items-center gap-2 mb-4">
+        <MessageSquare class="h-5 w-5 text-primary" />
+        <h3 class="font-medium">{{ t('comments.form.title') }}</h3>
+      </div>
+
       <!-- Not logged in message -->
       <div v-if="!isAuthenticated" class="flex items-center gap-2 text-sm p-3 bg-amber-50 text-amber-700 rounded-md mb-4">
         <AlertCircle class="h-5 w-5 flex-shrink-0" />
@@ -118,37 +190,124 @@ const handleSubmit = async () => {
         <span>{{ error }}</span>
       </div>
 
-      <form @submit.prevent="handleSubmit">
-        <div class="space-y-4">
-          <div>
-            <label for="comment-content" class="block text-sm font-medium mb-2">{{ t('comments.form.content') }}</label>
-            <textarea
-                id="comment-content"
-                v-model="content"
-                :placeholder="t('comments.form.placeholder')"
-                rows="4"
-                class="w-full rounded-md border border-input px-3 py-2 text-sm shadow-xs focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                :disabled="!isAuthenticated || isSubmitting"
-            ></textarea>
+      <!-- Editor Section -->
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-2">
+            {{ t('comments.form.content') }}
+            <span class="text-red-500 ml-1">*</span>
+          </label>
+
+          <!-- Character count and validation info -->
+          <div class="flex justify-between items-center text-xs text-muted-foreground mb-2">
+            <span>{{ t('comments.form.minCharacters') }}</span>
+            <span :class="{ 'text-red-500': characterCount > 0 && characterCount < 3 }">
+              {{ characterCount }} {{ t('comments.form.characters') }}
+            </span>
           </div>
+
+          <!-- Quill Editor -->
+          <QuillEditor
+              ref="editorRef"
+              v-model="content"
+              :placeholder="t('comments.form.placeholder')"
+              preset="minimal"
+              height="200px"
+              :read-only="!isAuthenticated"
+              @ready="onEditorReady"
+              class="w-full"
+          />
+
+          <!-- Helper text -->
+          <p class="text-xs text-muted-foreground mt-2">
+            {{ t('comments.form.helpText') }}
+          </p>
         </div>
-      </form>
+      </div>
     </CardContent>
 
-    <CardFooter>
+    <CardFooter class="flex justify-between items-center">
+      <!-- Clear button (only show if there's content) -->
+      <Button
+          v-if="content && characterCount > 0"
+          variant="ghost"
+          size="sm"
+          @click="clearContent"
+          :disabled="isSubmitting"
+          class="text-muted-foreground hover:text-foreground"
+      >
+        {{ t('comments.form.clear') }}
+      </Button>
+      <div v-else></div>
+
+      <!-- Submit button -->
       <Button
           @click="handleSubmit"
           :disabled="!isValid || !isAuthenticated || isSubmitting"
-          class="ml-auto"
+          class="min-w-[120px]"
       >
         <template v-if="isSubmitting">
           <Spinner color="text-white" size="sm" :mr="true" />
           {{ t('comments.form.submitting') }}
         </template>
         <template v-else>
+          <MessageSquare class="h-4 w-4 mr-2" />
           {{ t('comments.form.submit') }}
         </template>
       </Button>
     </CardFooter>
   </Card>
 </template>
+
+<style scoped>
+/* Custom styles for comment form editor */
+:deep(.quill-editor-wrapper) {
+  /* Smaller border radius for comment form */
+  border-radius: 6px;
+}
+
+:deep(.ql-toolbar) {
+  /* More compact toolbar for comments */
+  padding: 8px;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+:deep(.ql-toolbar .ql-formats) {
+  margin-right: 12px;
+}
+
+:deep(.ql-editor) {
+  /* Better spacing for comment editor */
+  padding: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 120px;
+}
+
+:deep(.ql-editor.ql-blank::before) {
+  color: hsl(var(--muted-foreground));
+  font-style: normal;
+  font-size: 14px;
+}
+
+/* Highlight validation state */
+.character-count-invalid {
+  color: hsl(var(--destructive));
+}
+
+/* Focus state for the entire editor wrapper when authenticated */
+:deep(.quill-editor-wrapper:focus-within) {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Disabled state styling */
+:deep(.quill-editor-wrapper[data-read-only="true"]) {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+:deep(.quill-editor-wrapper[data-read-only="true"] .ql-toolbar) {
+  pointer-events: none;
+}
+</style>
