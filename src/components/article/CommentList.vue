@@ -3,6 +3,7 @@
 import { ref, computed, onMounted, onUnmounted, watch, defineExpose } from 'vue'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { QuillEditor } from '@/components/ui/editor'
 import { useI18n } from '@/i18n'
 import { MessageSquare, User, Calendar, MoreVertical, Pencil, AlertCircle } from 'lucide-vue-next'
 import commentService, { type Comment } from '@/services/comment.service'
@@ -29,6 +30,14 @@ const openedDropdownId = ref<number | null>(null)
 const editingCommentId = ref<number | null>(null)
 const editContent = ref('')
 const commentsLoaded = ref(false)
+
+/**
+ * Check if edit content is valid
+ */
+const isEditContentValid = computed(() => {
+  if (!editContent.value) return false
+  return commentService.isContentValid(editContent.value)
+})
 
 // Get auth store to check if user is logged in and compare with comment author
 const authStore = useAuthStore()
@@ -140,7 +149,7 @@ const cancelEditing = () => {
  * Save edited comment
  */
 const saveComment = async (commentId: number) => {
-  if (!editContent.value.trim()) return
+  if (!isEditContentValid.value) return
 
   const comment = comments.value.find(c => c.id === commentId)
 
@@ -178,8 +187,6 @@ const saveComment = async (commentId: number) => {
     loading.value = false
   }
 }
-
-
 
 /**
  * Load more comments (next page)
@@ -238,7 +245,7 @@ defineExpose({
 
     <!-- Comments list -->
     <div v-else class="space-y-4">
-      <Card v-for="comment in comments" :key="comment.id" class="overflow-hidden">
+      <Card v-for="comment in comments" :key="comment.id" class="overflow-hidden comment-card">
         <CardContent class="pt-6">
           <!-- Comment header -->
           <div class="flex items-center justify-between mb-4">
@@ -290,23 +297,29 @@ defineExpose({
 
           <!-- Comment content (editable if in edit mode) -->
           <div v-if="editingCommentId === comment.id" class="space-y-4">
-            <textarea
-                v-model="editContent"
-                rows="4"
-                class="w-full rounded-md border border-input px-3 py-2 text-sm shadow-xs focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-none"
-            ></textarea>
-            <div class="flex justify-end gap-2">
+            <div class="edit-mode-wrapper">
+              <QuillEditor
+                  v-model="editContent"
+                  :placeholder="t('comments.form.placeholder')"
+                  preset="minimal"
+                  height="150px"
+                  class="w-full"
+              />
+            </div>
+            <div class="flex justify-end gap-2 edit-mode-buttons">
               <Button
                   variant="outline"
                   size="sm"
                   @click="cancelEditing"
+                  class="btn"
               >
                 {{ t('comments.actions.cancel') }}
               </Button>
               <Button
                   size="sm"
                   @click="saveComment(comment.id)"
-                  :disabled="!editContent.trim() || loading"
+                  :disabled="!isEditContentValid || loading"
+                  class="btn"
               >
                 <Spinner v-if="loading" color="text-white" size="sm" :mr="true" />
                 {{ t('comments.actions.save') }}
@@ -315,8 +328,8 @@ defineExpose({
           </div>
 
           <!-- Regular comment display -->
-          <div v-else class="text-sm">
-            {{ comment.content }}
+          <div v-else class="comment-content prose prose-sm dark:prose-invert max-w-none">
+            <div v-html="comment.content"></div>
           </div>
         </CardContent>
       </Card>
@@ -336,3 +349,134 @@ defineExpose({
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Comment content styling */
+.comment-content :deep(p) {
+  margin: 0.5rem 0;
+}
+
+.comment-content :deep(p:first-child) {
+  margin-top: 0;
+}
+
+.comment-content :deep(p:last-child) {
+  margin-bottom: 0;
+}
+
+.comment-content :deep(strong) {
+  font-weight: 600;
+}
+
+.comment-content :deep(em) {
+  font-style: italic;
+}
+
+.comment-content :deep(u) {
+  text-decoration: underline;
+}
+
+.comment-content :deep(a) {
+  color: hsl(var(--primary));
+  text-decoration: underline;
+}
+
+.comment-content :deep(a:hover) {
+  opacity: 0.8;
+}
+
+.comment-content :deep(ul),
+.comment-content :deep(ol) {
+  margin: 0.75rem 0;
+  padding-left: 1.5rem;
+}
+
+.comment-content :deep(li) {
+  margin: 0.25rem 0;
+}
+
+.comment-content :deep(ul li) {
+  list-style-type: disc;
+}
+
+.comment-content :deep(ol li) {
+  list-style-type: decimal;
+}
+
+/* Compact editor for editing comments */
+.edit-mode-wrapper {
+  border: 1px solid hsl(var(--border));
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.edit-mode-wrapper :deep(.quill-editor-wrapper) {
+  border: none;
+  border-radius: 0;
+}
+
+.edit-mode-wrapper :deep(.quill-editor-wrapper .ql-toolbar) {
+  padding: 6px 8px;
+  border-bottom: 1px solid hsl(var(--border));
+  border-left: none;
+  border-right: none;
+  border-top: none;
+}
+
+.edit-mode-wrapper :deep(.quill-editor-wrapper .ql-container) {
+  border: none;
+}
+
+.edit-mode-wrapper :deep(.quill-editor-wrapper .ql-editor) {
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100px;
+}
+
+/* Comment actions dropdown */
+.comment-actions {
+  position: relative;
+}
+
+/* Smooth transitions for comment interactions */
+.comment-card {
+  transition: box-shadow 0.2s ease;
+}
+
+.comment-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading state for comment actions */
+.comment-loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .comment-content :deep(ul),
+  .comment-content :deep(ol) {
+    padding-left: 1.25rem;
+  }
+
+  .edit-mode-wrapper :deep(.quill-editor-wrapper .ql-toolbar) {
+    padding: 4px 6px;
+  }
+
+  .edit-mode-wrapper :deep(.quill-editor-wrapper .ql-editor) {
+    padding: 6px 8px;
+    font-size: 13px;
+  }
+
+  /* Stack buttons on mobile for better UX */
+  .edit-mode-buttons {
+    flex-direction: column-reverse;
+  }
+
+  .edit-mode-buttons .btn {
+    width: 100%;
+  }
+}
+</style>

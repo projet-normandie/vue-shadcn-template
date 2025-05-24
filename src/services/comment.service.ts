@@ -83,7 +83,50 @@ class CommentService {
         return response.data
     }
 
+    /**
+     * Validate comment content
+     * Checks if the content has meaningful text (not just HTML tags)
+     * @param content HTML content from editor
+     * @returns boolean indicating if content is valid
+     */
+    isContentValid(content: string): boolean {
+        if (!content || typeof content !== 'string') {
+            return false
+        }
 
+        // Remove HTML tags and get plain text
+        const tempDiv = document.createElement('div')
+        tempDiv.innerHTML = content
+        const plainText = tempDiv.textContent || tempDiv.innerText || ''
+
+        // Check if we have at least 3 meaningful characters
+        const trimmedText = plainText.trim()
+        return trimmedText.length >= 3
+    }
+
+    /**
+     * Get plain text from HTML content
+     * @param content HTML content
+     * @returns Plain text content
+     */
+    getPlainText(content: string): string {
+        if (!content || typeof content !== 'string') {
+            return ''
+        }
+
+        const tempDiv = document.createElement('div')
+        tempDiv.innerHTML = content
+        return tempDiv.textContent || tempDiv.innerText || ''
+    }
+
+    /**
+     * Get character count from HTML content
+     * @param content HTML content
+     * @returns Character count of plain text
+     */
+    getCharacterCount(content: string): number {
+        return this.getPlainText(content).trim().length
+    }
 }
 
 export default new CommentService()

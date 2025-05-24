@@ -18,6 +18,7 @@
     "@tailwindcss/vite": "^4.1.4",
     "@vee-validate/zod": "^4.15.0",
     "@vue/eslint-config-prettier": "^10.2.0",
+    "@vueup/vue-quill": "^1.2.0",
     "@vueuse/core": "^13.2.0",
     "axios": "^1.9.0",
     "class-variance-authority": "^0.7.1",
@@ -39,6 +40,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@types/node": "^22.15.2",
+    "@types/quill": "^2.0.14",
     "@typescript-eslint/eslint-plugin": "^8.32.0",
     "@typescript-eslint/parser": "^8.32.0",
     "@vitejs/plugin-vue": "^5.2.2",
