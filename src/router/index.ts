@@ -59,6 +59,54 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requiresAuth: true }
     },
     {
+        path: '/faq',
+        name: 'FAQ',
+        component: () => import(/* webpackChunkName: "faq" */ '@/views/FAQ.vue'),
+        meta: {
+            title: 'FAQ'
+        }
+    },
+    {
+        path: '/rules',
+        name: 'Rules',
+        component: () => import(/* webpackChunkName: "rules" */ '@/views/Rules.vue'),
+        meta: {
+            title: 'Community Rules'
+        }
+    },
+    {
+        path: '/privacy',
+        name: 'Privacy',
+        component: () => import(/* webpackChunkName: "privacy" */ '@/views/Privacy.vue'),
+        meta: {
+            title: 'Privacy Policy'
+        }
+    },
+    {
+        path: '/terms',
+        name: 'Terms',
+        component: () => import(/* webpackChunkName: "terms" */ '@/views/Terms.vue'),
+        meta: {
+            title: 'Terms of Service'
+        }
+    },
+    {
+        path: '/contact',
+        name: 'Contact',
+        component: () => import(/* webpackChunkName: "contact" */ '@/views/Contact.vue'),
+        meta: {
+            title: 'Contact Us'
+        }
+    },
+    {
+        path: '/about',
+        name: 'About',
+        component: () => import(/* webpackChunkName: "about" */ '@/views/About.vue'),
+        meta: {
+            title: 'About Us'
+        }
+    },
+    {
         path: '/:pathMatch(.*)*',
         name: 'NotFound',
         component: NotFound
