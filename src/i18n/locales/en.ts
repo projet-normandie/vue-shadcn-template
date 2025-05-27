@@ -17,7 +17,10 @@ export default {
             copyright: '© 2025 My Application. All rights reserved.',
             legal: 'Legal Notice',
             privacy: 'Privacy Policy',
-            contact: 'Contact'
+            terms: 'Terms of Service',
+            contact: 'Contact',
+            rules: 'Rules',
+            about: 'About'
         },
         sidebar: {
             title: 'Application',

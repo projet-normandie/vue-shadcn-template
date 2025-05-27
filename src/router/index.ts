@@ -107,6 +107,14 @@ const routes: Array<RouteRecordRaw> = [
         }
     },
     {
+        path: '/legal',
+        name: 'Legal',
+        component: () => import(/* webpackChunkName: "legal" */ '@/views/Legal.vue'),
+        meta: {
+            title: 'Legal Notice'
+        }
+    },
+    {
         path: '/:pathMatch(.*)*',
         name: 'NotFound',
         component: NotFound
