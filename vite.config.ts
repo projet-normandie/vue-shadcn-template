@@ -4,6 +4,9 @@ import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
+  optimizeDeps: {
+    include: ['quill']
+  },
   plugins: [vue(), tailwindcss()],
   resolve: {
     alias: {

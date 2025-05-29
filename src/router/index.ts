@@ -59,6 +59,15 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requiresAuth: true }
     },
     {
+        path: '/quill-test',
+        name: 'QuillTest',
+        component: () => import(/* webpackChunkName: "editor-test" */ '@/views/QuillTest.vue'),
+        meta: {
+            title: 'Quill Test',
+            requiresAuth: false // Accessible à tous pour les tests
+        }
+    },
+    {
         path: '/faq',
         name: 'FAQ',
         component: () => import(/* webpackChunkName: "faq" */ '@/views/FAQ.vue'),

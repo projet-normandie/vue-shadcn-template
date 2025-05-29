@@ -4,6 +4,7 @@ import { ref, computed, onMounted, onUnmounted, watch, defineExpose } from 'vue'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { QuillEditor } from '@/components/ui/editor'
+import { toolbarConfigs } from '@/components/ui/editor'
 import { useI18n } from '@/i18n'
 import { MessageSquare, User, Calendar, MoreVertical, Pencil, AlertCircle } from 'lucide-vue-next'
 import commentService, { type Comment } from '@/services/comment.service'
@@ -301,7 +302,7 @@ defineExpose({
               <QuillEditor
                   v-model="editContent"
                   :placeholder="t('comments.form.placeholder')"
-                  preset="minimal"
+                  :toolbar="toolbarConfigs.basic"
                   height="150px"
                   class="w-full"
               />

@@ -1,46 +1,20 @@
-// src/components/ui/editor/QuillEditor.vue
+// src/components/ui/editor/AdvancedQuillEditor.vue
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
+import { ref, onMounted, watch, nextTick } from 'vue'
 import { cn } from '@/lib/utils'
+import { QuillImageHandler, type ImageUploadOptions } from './QuillImageHandler'
 import type { HTMLAttributes } from 'vue'
 
-// Import Quill dynamically to avoid SSR issues
+// Import Quill dynamically to avoid issues
 let QuillModule: any = null
 
-// Quill types
-interface QuillOptions {
-    theme?: string
-    modules?: {
-        toolbar?: string | Array<any> | boolean
-        [key: string]: any
-    }
-    formats?: string[]
-    readOnly?: boolean
-    placeholder?: string
-}
-
-interface QuillInstance {
-    root: HTMLElement
-    getContents(): any
-    getText(): string
-    getHTML(): string
-    setContents(delta: any): void
-    setText(text: string): void
-    insertText(index: number, text: string, formats?: any): void
-    deleteText(index: number, length: number): void
-    formatText(index: number, length: number, formats: any): void
-    getSelection(): { index: number; length: number } | null
-    setSelection(index: number, length?: number): void
-    focus(): void
-    blur(): void
-    enable(enabled?: boolean): void
-    disable(): void
-    on(eventName: string, handler: Function): void
-    off(eventName: string, handler?: Function): void
-}
+/**
+ * Advanced Quill Editor with image upload capabilities
+ * and custom modules support
+ */
 
 // Props interface
-interface QuillEditorProps {
+interface AdvancedQuillEditorProps {
     modelValue?: string
     placeholder?: string
     readOnly?: boolean
@@ -49,17 +23,18 @@ interface QuillEditorProps {
     formats?: string[]
     class?: HTMLAttributes['class']
     height?: string
+    imageUpload?: ImageUploadOptions
     modules?: Record<string, any>
 }
 
 // Define props
-const props = withDefaults(defineProps<QuillEditorProps>(), {
+const props = withDefaults(defineProps<AdvancedQuillEditorProps>(), {
     modelValue: '',
-    placeholder: 'Write something...',
+    placeholder: 'Write something amazing...',
     readOnly: false,
     theme: 'snow',
     toolbar: true,
-    height: '200px'
+    height: '300px'
 })
 
 // Define emits
@@ -67,14 +42,17 @@ const emit = defineEmits<{
     'update:modelValue': [value: string]
     'textChange': [delta: any, oldDelta: any, source: string]
     'selectionChange': [range: any, oldRange: any, source: string]
-    'editorReady': [editor: QuillInstance]
-    'focus': [editor: QuillInstance]
-    'blur': [editor: QuillInstance]
+    'editorReady': [editor: any]
+    'focus': [editor: any]
+    'blur': [editor: any]
+    'imageUploaded': [url: string, file?: File]
+    'imageUploadError': [error: Error, file?: File]
 }>()
 
 // Reactive references
 const editorContainer = ref<HTMLElement>()
-const quillInstance = ref<QuillInstance | null>(null)
+const quillInstance = ref<any>(null)
+const imageHandler = ref<QuillImageHandler | null>(null)
 const isReady = ref(false)
 const loading = ref(true)
 
@@ -101,40 +79,39 @@ const loadQuill = async () => {
 }
 
 /**
- * Default toolbar configuration
+ * Enhanced toolbar with image upload
  */
-const getDefaultToolbar = () => {
+const getEnhancedToolbar = () => {
     if (props.toolbar === false) return false
     if (props.toolbar === true || !props.toolbar) {
         return [
             ['bold', 'italic', 'underline', 'strike'],
             ['blockquote', 'code-block'],
-            [{ 'header': 1 }, { 'header': 2 }],
+            [{ 'header': [1, 2, 3, false] }],
             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
             [{ 'script': 'sub' }, { 'script': 'super' }],
             [{ 'indent': '-1' }, { 'indent': '+1' }],
             [{ 'direction': 'rtl' }],
             [{ 'size': ['small', false, 'large', 'huge'] }],
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
             [{ 'color': [] }, { 'background': [] }],
             [{ 'font': [] }],
             [{ 'align': [] }],
-            ['clean'],
-            ['link', 'image']
+            ['link', 'image', 'video'],
+            ['clean']
         ]
     }
     return props.toolbar
 }
 
 /**
- * Default formats
+ * Enhanced formats including video
  */
-const getDefaultFormats = () => {
+const getEnhancedFormats = () => {
     return props.formats || [
         'header', 'font', 'size',
         'bold', 'italic', 'underline', 'strike', 'blockquote',
         'list', 'indent',
-        'link', 'image',
+        'link', 'image', 'video',
         'color', 'background',
         'align', 'script',
         'code-block'
@@ -142,7 +119,33 @@ const getDefaultFormats = () => {
 }
 
 /**
- * Initialize Quill editor
+ * Custom image upload handler
+ */
+const handleImageUpload = async (file: File): Promise<string> => {
+    try {
+        emit('imageUploaded', '', file)
+
+        // If props.imageUpload has an onUpload function, use it
+        if (props.imageUpload?.onUpload) {
+            return await props.imageUpload.onUpload(file)
+        }
+
+        // Otherwise, convert to base64 as fallback
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader()
+            reader.onload = () => resolve(reader.result as string)
+            reader.onerror = () => reject(new Error('Failed to read file'))
+            reader.readAsDataURL(file)
+        })
+
+    } catch (error) {
+        emit('imageUploadError', error as Error, file)
+        throw error
+    }
+}
+
+/**
+ * Initialize Quill editor with advanced features
  */
 const initializeQuill = async () => {
     if (!editorContainer.value) return
@@ -151,20 +154,31 @@ const initializeQuill = async () => {
         // Load Quill dynamically
         const Quill = await loadQuill()
 
+        // Prepare modules
+        const modules = {
+            toolbar: getEnhancedToolbar(),
+            ...props.modules
+        }
+
         // Create Quill options
-        const options: QuillOptions = {
+        const options = {
             theme: props.theme,
             readOnly: props.readOnly,
             placeholder: props.placeholder,
-            formats: getDefaultFormats(),
-            modules: {
-                toolbar: getDefaultToolbar(),
-                ...props.modules
-            }
+            formats: getEnhancedFormats(),
+            modules
         }
 
         // Initialize Quill
-        quillInstance.value = new Quill(editorContainer.value, options) as QuillInstance
+        quillInstance.value = new Quill(editorContainer.value, options)
+
+        // Setup image handler if image upload is enabled
+        if (props.imageUpload || getEnhancedToolbar() !== false) {
+            imageHandler.value = new QuillImageHandler(quillInstance.value, {
+                ...props.imageUpload,
+                onUpload: handleImageUpload
+            })
+        }
 
         // Set initial content
         if (props.modelValue) {
@@ -182,7 +196,7 @@ const initializeQuill = async () => {
         emit('editorReady', quillInstance.value)
 
     } catch (error) {
-        console.error('Failed to initialize Quill editor:', error)
+        console.error('Failed to initialize Advanced Quill editor:', error)
         loading.value = false
     }
 }
@@ -237,7 +251,7 @@ watch(() => props.readOnly, (newValue) => {
 })
 
 /**
- * Public methods accessible via template ref
+ * Public methods
  */
 const focus = () => {
     quillInstance.value?.focus()
@@ -265,6 +279,14 @@ const setContent = (content: string) => {
     }
 }
 
+const insertImageFromUrl = (url: string) => {
+    imageHandler.value?.insertImageFromUrl(url)
+}
+
+const getImages = () => {
+    return imageHandler.value?.getImages() || []
+}
+
 // Expose methods
 defineExpose({
     focus,
@@ -272,40 +294,34 @@ defineExpose({
     getEditor,
     getText,
     getHTML,
-    setContent
+    setContent,
+    insertImageFromUrl,
+    getImages
 })
 
-// Lifecycle hooks
+// Lifecycle
 onMounted(async () => {
     await nextTick()
     await initializeQuill()
 })
-
-onBeforeUnmount(() => {
-    if (quillInstance.value) {
-        // Clean up events
-        quillInstance.value.off('text-change')
-        quillInstance.value.off('selection-change')
-    }
-})
 </script>
 
 <template>
-    <div class="quill-editor-wrapper">
+    <div class="advanced-quill-editor-wrapper">
         <!-- Loading state -->
         <div
             v-if="loading"
             class="flex items-center justify-center border border-input rounded-md bg-background"
             :style="{ height: props.height }"
         >
-            <div class="text-sm text-muted-foreground">Loading editor...</div>
+            <div class="text-sm text-muted-foreground">Loading advanced editor...</div>
         </div>
 
         <!-- Editor container -->
         <div
             ref="editorContainer"
             :class="cn(
-        'quill-editor border border-input rounded-md bg-background focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-[3px] transition-[color,box-shadow]',
+        'advanced-quill-editor border border-input rounded-md bg-background focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-[3px] transition-[color,box-shadow]',
         props.readOnly && 'opacity-60 cursor-not-allowed',
         props.class
       )"
@@ -316,69 +332,110 @@ onBeforeUnmount(() => {
 </template>
 
 <style>
-/* Quill editor custom styles */
-.quill-editor .ql-toolbar {
+/* Advanced editor styles */
+.advanced-quill-editor .ql-toolbar {
     border: none;
     border-bottom: 1px solid hsl(var(--border));
     padding: 0.5rem;
+    background-color: hsl(var(--background));
 }
 
-.quill-editor .ql-container {
+.advanced-quill-editor .ql-container {
     border: none;
     font-family: inherit;
 }
 
-.quill-editor .ql-editor {
+.advanced-quill-editor .ql-editor {
     padding: 0.75rem;
-    min-height: 120px;
+    min-height: 150px;
     font-size: 0.875rem;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
-.quill-editor .ql-editor.ql-blank::before {
+.advanced-quill-editor .ql-editor.ql-blank::before {
     color: hsl(var(--muted-foreground));
     font-style: normal;
 }
 
-/* Dark mode support */
-.dark .quill-editor .ql-toolbar {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
+/* Image styling */
+.advanced-quill-editor .ql-editor img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    margin: 0.5rem 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.dark .quill-editor .ql-stroke {
+.advanced-quill-editor .ql-editor img:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease;
+}
+
+/* Video styling */
+.advanced-quill-editor .ql-editor .ql-video {
+    width: 100%;
+    height: 400px;
+    border-radius: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+/* Dark mode support */
+.dark .advanced-quill-editor .ql-toolbar {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    border-bottom-color: hsl(var(--border));
+}
+
+.dark .advanced-quill-editor .ql-stroke {
     stroke: hsl(var(--foreground));
 }
 
-.dark .quill-editor .ql-fill {
+.dark .advanced-quill-editor .ql-fill {
     fill: hsl(var(--foreground));
 }
 
-.dark .quill-editor .ql-picker-label {
+.dark .advanced-quill-editor .ql-picker-label {
     color: hsl(var(--foreground));
 }
 
+.dark .advanced-quill-editor .ql-picker-options {
+    background-color: hsl(var(--background));
+    border-color: hsl(var(--border));
+}
+
+/* Toolbar button hover effects */
+.advanced-quill-editor .ql-toolbar button:hover {
+    background-color: hsl(var(--accent));
+    border-radius: 0.25rem;
+}
+
+.advanced-quill-editor .ql-toolbar button.ql-active {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border-radius: 0.25rem;
+}
+
 /* Focus styles */
-.quill-editor:focus-within {
+.advanced-quill-editor:focus-within {
     outline: none;
 }
 
-/* Custom scrollbar for editor */
-.quill-editor .ql-editor::-webkit-scrollbar {
-    width: 6px;
+/* Scrollbar styling */
+.advanced-quill-editor .ql-editor::-webkit-scrollbar {
+    width: 8px;
 }
 
-.quill-editor .ql-editor::-webkit-scrollbar-track {
+.advanced-quill-editor .ql-editor::-webkit-scrollbar-track {
     background: hsl(var(--muted));
-    border-radius: 3px;
+    border-radius: 4px;
 }
 
-.quill-editor .ql-editor::-webkit-scrollbar-thumb {
+.advanced-quill-editor .ql-editor::-webkit-scrollbar-thumb {
     background: hsl(var(--muted-foreground));
-    border-radius: 3px;
+    border-radius: 4px;
 }
 
-.quill-editor .ql-editor::-webkit-scrollbar-thumb:hover {
+.advanced-quill-editor .ql-editor::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--foreground));
 }
 </style>

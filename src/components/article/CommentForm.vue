@@ -4,6 +4,7 @@ import { ref, computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { QuillEditor } from '@/components/ui/editor'
+import { toolbarConfigs } from '@/components/ui/editor'
 import { useAuthStore } from '@/stores/auth'
 import { useI18n } from '@/i18n'
 import toastService from '@/services/toast.service'
@@ -19,7 +20,7 @@ interface QuillEditorInstance {
   getHTML: () => string
   getText: () => string
   focus: () => void
-  setContents: (delta: unknown[]) => void
+  setContent: (content: string) => void
 }
 
 /**
@@ -45,7 +46,6 @@ const { t } = useI18n()
 
 // Form state
 const content = ref('')
-const plainTextContent = ref('')
 const isSubmitting = ref(false)
 const error = ref<string | null>(null)
 const editorRef = ref<QuillEditorInstance | null>(null)
@@ -61,7 +61,6 @@ const isAuthenticated = computed(() => {
  * Check if form is valid
  */
 const isValid = computed(() => {
-  console.log(editorRef.value?.getHTML())
   if (!content.value) return false
 
   // Get plain text from editor to validate actual content length
@@ -73,7 +72,8 @@ const isValid = computed(() => {
  * Get character count for display
  */
 const characterCount = computed(() => {
-  return (plainTextContent.value || '').length
+  const plainText = editorRef.value?.getText()?.trim() || ''
+  return plainText.length
 })
 
 /**
@@ -115,12 +115,11 @@ const handleSubmit = async () => {
 
     // Reset form
     content.value = ''
-    plainTextContent.value = ''
 
     // Check if editor is available before calling methods
-    if (editorRef.value && typeof editorRef.value.setContents === 'function') {
+    if (editorRef.value && typeof editorRef.value.setContent === 'function') {
       try {
-        editorRef.value.setContents([]) // Clear Quill editor content
+        editorRef.value.setContent('') // Clear Quill editor content
       } catch (error) {
         console.warn('Error clearing editor after submit:', error)
       }
@@ -155,18 +154,18 @@ const handleSubmit = async () => {
  */
 const clearContent = () => {
   content.value = ''
-  plainTextContent.value = '' // Reset aussi le texte brut
 
   // Check if editor is available before calling methods
-  if (editorRef.value && typeof editorRef.value.setContents === 'function') {
+  if (editorRef.value && typeof editorRef.value.setContent === 'function') {
     try {
-      editorRef.value.setContents([])
+      editorRef.value.setContent('')
     } catch (error) {
       console.warn('Error clearing editor content:', error)
     }
   }
   error.value = null
 }
+
 </script>
 
 <template>
@@ -206,15 +205,15 @@ const clearContent = () => {
             </span>
           </div>
 
-          <!-- Quill Editor -->
+          <!-- Quill Editor with basic toolbar -->
           <QuillEditor
               ref="editorRef"
               v-model="content"
               :placeholder="t('comments.form.placeholder')"
-              preset="minimal"
+              :toolbar="toolbarConfigs.basic"
               height="200px"
               :read-only="!isAuthenticated"
-              @ready="onEditorReady"
+              @editor-ready="onEditorReady"
               class="w-full"
           />
 
