@@ -53,6 +53,31 @@ export default {
         notFound: {
             title: 'Article not found',
             description: 'The article you\'re looking for doesn\'t exist or has been removed.'
+        },
+        list: {
+            title: 'All Articles',
+            subtitle: 'Discover our latest articles and stories',
+            searchPlaceholder: 'Search articles...',
+            sortBy: 'Sort by',
+            itemsPerPage: 'Show',
+            perPage: 'per page',
+            search: 'Search',
+            clearFilters: 'Clear filters',
+            retry: 'Try again',
+            readMore: 'Read more',
+            previous: 'Previous',
+            next: 'Next',
+            noResults: 'No articles found',
+            noResultsSearch: 'No articles match your search criteria',
+            showing: 'Showing {start} to {end} of {total} articles',
+            pageInfo: 'Page {current} of {total}',
+            itemCount: 'no articles | 1 article | {count} articles'
+        },
+        sort: {
+            newest: 'Newest first',
+            oldest: 'Oldest first',
+            titleAZ: 'Title A-Z',
+            titleZA: 'Title Z-A'
         }
     },
     comments: {

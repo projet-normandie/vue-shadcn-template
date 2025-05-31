@@ -17,6 +17,14 @@ const routes: Array<RouteRecordRaw> = [
         component: Home
     },
     {
+        path: '/articles',
+        name: 'ArticleList',
+        component: () => import(/* webpackChunkName: "article" */ '@/views/article/ArticleList.vue'),
+        meta: {
+            title: 'Articles'
+        }
+    },
+    {
         path: '/:slug-article-a:id(\\d+)',
         name: 'ArticleDetail',
         component: () => import(/* webpackChunkName: "article" */ '@/views/article/ArticleDetail.vue'),

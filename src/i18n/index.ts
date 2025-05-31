@@ -1,80 +1,130 @@
-// src/i18n/index.ts
-import { computed, watch } from 'vue'
+// src/i18n/index.ts - Configuration Vue I18n
+import { createI18n } from 'vue-i18n'
 import { useStorage } from '@vueuse/core'
+import { updateApiLocale } from '@/lib/axios'
+import { computed } from 'vue'
+
+// Import your existing translations
 import en from './locales/en'
 import fr from './locales/fr'
-import { updateApiLocale } from '@/lib/axios'
 
-// Define the supported languages
+// Define supported locales
 export type SupportedLocale = 'en' | 'fr'
 
-// Define interface for translations
-export interface Translations {
-    [key: string]: string | Translations
-}
-
-// Available translations
-const translations: Record<SupportedLocale, Translations> = {
-    en,
-    fr
-}
-
-// Define available languages with their display names
+// Available locales with display names
 export const availableLocales: Record<SupportedLocale, string> = {
     en: 'English',
     fr: 'Français'
 }
 
-// Get browser language or use fallback
+// Get browser language or fallback
 const getBrowserLanguage = (): SupportedLocale => {
     const browserLang = navigator.language.split('-')[0]
-    return (browserLang as SupportedLocale) in translations ? (browserLang as SupportedLocale) : 'en'
+    return (browserLang as SupportedLocale) in availableLocales ? (browserLang as SupportedLocale) : 'en'
 }
 
-// Create a composable to manage i18n state
-export function useI18n() {
-    // Use persistent storage for language preference
-    const locale = useStorage<SupportedLocale>('app-locale', getBrowserLanguage())
-
-    // Watch for locale changes to update document lang attribute
-    watch(locale, (newLocale) => {
-        document.documentElement.setAttribute('lang', newLocale)
-
-        // Update API locale for Axios requests
-        updateApiLocale(newLocale)
-    }, { immediate: true })
-
-    // Function to get a translated value by key
-    const t = (key: string): string => {
-        const keys = key.split('.')
-        let value: unknown = translations[locale.value]
-
-        for (const k of keys) {
-            if (value && typeof value === 'object' && k in value) {
-                value = value[k]
-            } else {
-                // Fallback to key if translation not found
-                return key
+// Create the i18n instance
+const i18n = createI18n({
+    legacy: false, // Use Composition API mode
+    locale: getBrowserLanguage(),
+    fallbackLocale: 'en',
+    messages: {
+        en,
+        fr
+    },
+    // Enable missing message warnings in development
+    missingWarn: import.meta.env.DEV,
+    fallbackWarn: import.meta.env.DEV,
+    // Date/time formats
+    datetimeFormats: {
+        en: {
+            short: {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            },
+            long: {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            }
+        },
+        fr: {
+            short: {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            },
+            long: {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
             }
         }
-
-        return typeof value === 'string' ? value : key
-    }
-
-    // Change the current locale
-    const setLocale = (newLocale: SupportedLocale) => {
-        if (newLocale in translations) {
-            locale.value = newLocale
+    },
+    // Number formats
+    numberFormats: {
+        en: {
+            currency: {
+                style: 'currency',
+                currency: 'USD'
+            },
+            decimal: {
+                style: 'decimal',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }
+        },
+        fr: {
+            currency: {
+                style: 'currency',
+                currency: 'EUR'
+            },
+            decimal: {
+                style: 'decimal',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }
         }
     }
+})
+
+// Composable for reactive i18n with persistence
+export function useI18n() {
+    const { locale, t, d, n, tm } = i18n.global
+
+    // Persistent locale storage
+    const persistentLocale = useStorage<SupportedLocale>('app-locale', getBrowserLanguage())
+
+    // Set initial locale from storage
+    locale.value = persistentLocale.value
+
+    // Update document language and API locale
+    const updateLocale = (newLocale: SupportedLocale) => {
+        if (newLocale in availableLocales) {
+            locale.value = newLocale
+            persistentLocale.value = newLocale
+            document.documentElement.setAttribute('lang', newLocale)
+            updateApiLocale(newLocale)
+        }
+    }
+
+    // Initialize
+    updateLocale(persistentLocale.value)
 
     return {
         locale: computed(() => locale.value),
         t,
-        setLocale,
+        d, // Date formatter
+        n, // Number formatter
+        tm, // Translation messages getter
+        setLocale: updateLocale,
         availableLocales
     }
 }
 
-// Export a global instance for convenience
-export const i18n = useI18n()
+export default i18n

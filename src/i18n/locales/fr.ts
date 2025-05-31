@@ -53,6 +53,31 @@ export default {
         notFound: {
             title: 'Article non trouvé',
             description: 'L\'article que vous recherchez n\'existe pas ou a été supprimé.'
+        },
+        list: {
+            title: 'Tous les Articles',
+            subtitle: 'Découvrez nos derniers articles et histoires',
+            searchPlaceholder: 'Rechercher des articles...',
+            sortBy: 'Trier par',
+            itemsPerPage: 'Afficher',
+            perPage: 'par page',
+            search: 'Rechercher',
+            clearFilters: 'Effacer les filtres',
+            retry: 'Réessayer',
+            readMore: 'Lire la suite',
+            previous: 'Précédent',
+            next: 'Suivant',
+            noResults: 'Aucun article trouvé',
+            noResultsSearch: 'Aucun article ne correspond à vos critères de recherche',
+            showing: 'Affichage de {start} à {end} sur {total} articles',
+            pageInfo: 'Page {current} sur {total}',
+            itemCount: 'aucun article | 1 article | {count} articles'
+        },
+        sort: {
+            newest: 'Plus récents',
+            oldest: 'Plus anciens',
+            titleAZ: 'Titre A-Z',
+            titleZA: 'Titre Z-A'
         }
     },
     comments: {
