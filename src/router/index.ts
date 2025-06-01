@@ -76,6 +76,15 @@ const routes: Array<RouteRecordRaw> = [
         }
     },
     {
+        path: '/video-players',
+        name: 'VideoPlayers',
+        component: () => import(/* webpackChunkName: "video-demo" */ '@/views/VideoPlayerDemo.vue'),
+        meta: {
+            title: 'Video Players Demo',
+            requiresAuth: false
+        }
+    },
+    {
         path: '/faq',
         name: 'FAQ',
         component: () => import(/* webpackChunkName: "faq" */ '@/views/FAQ.vue'),

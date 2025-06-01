@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Home, HelpCircle, Shield, Eye, FileText, Mail, Heart, Scale} from "lucide-vue-next"
+import {Home, HelpCircle, Shield, Eye, FileText, Mail, Heart, Scale, Video, TestTube} from "lucide-vue-next"
 import {
   Sidebar,
   SidebarContent,
@@ -27,6 +27,31 @@ const { t } = useI18n()
                 <RouterLink to="/">
                   <Home />
                   <span>{{ t('menu.home') }}</span>
+                </RouterLink>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+
+      <!-- Section Composants de développement -->
+      <SidebarGroup class="mt-6">
+        <SidebarGroupLabel>Development Components</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <RouterLink to="/quill-test">
+                  <TestTube />
+                  <span>Quill Editor Test</span>
+                </RouterLink>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <RouterLink to="/video-players">
+                  <Video />
+                  <span>Video Players Demo</span>
                 </RouterLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
