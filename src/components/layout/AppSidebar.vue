@@ -1,18 +1,31 @@
 <script setup lang="ts">
-import {Home, HelpCircle, Shield, Eye, FileText, Mail, Heart, Scale, Video, TestTube} from "lucide-vue-next"
+import { Home, HelpCircle, Shield, Eye, FileText, Mail, Heart, Scale, Video, TestTube } from "lucide-vue-next"
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
+    Sidebar,
+    SidebarContent,
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarGroupLabel,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { useI18n } from '@/i18n'
+import { useSidebar } from '@/components/ui/sidebar'
+import { useRouter } from 'vue-router'
+import { watch } from 'vue'
 
 const { t } = useI18n()
+const { setOpenMobile } = useSidebar()
+const router = useRouter()
+
+/**
+ * Watch for route changes and close mobile sidebar
+ * This handles cases where navigation happens programmatically
+ */
+watch(() => router.currentRoute.value.path, () => {
+    setOpenMobile(false)
+})
 </script>
 
 <template>
@@ -34,7 +47,7 @@ const { t } = useI18n()
         </SidebarGroupContent>
       </SidebarGroup>
 
-      <!-- Section Composants de développement -->
+      <!-- Development Components Section -->
       <SidebarGroup class="mt-6">
         <SidebarGroupLabel>Development Components</SidebarGroupLabel>
         <SidebarGroupContent>
