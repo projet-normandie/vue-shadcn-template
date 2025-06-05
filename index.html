@@ -1,19 +1,61 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#ffffff">
+    <meta name="background-color" content="#ffffff">
+    <meta name="display" content="standalone">
+    <meta name="orientation" content="portrait-primary">
+
+    <!-- Apple PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="My Vue App">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <!-- Microsoft PWA Meta Tags -->
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- Standard Meta Tags -->
+    <meta name="description" content="A fully-featured Vue 3 application with PWA capabilities">
+    <meta name="keywords" content="vue, pwa, progressive web app, typescript">
+    <meta name="author" content="Your Name">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="My Vue Application">
+    <meta property="og:description" content="A fully-featured Vue 3 application with PWA capabilities">
+    <meta property="og:image" content="/pwa-512x512.png">
+    <meta property="og:url" content="https://your-domain.com">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="My Vue Application">
+    <meta name="twitter:description" content="A fully-featured Vue 3 application with PWA capabilities">
+    <meta name="twitter:image" content="/pwa-512x512.png">
+
+    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
-    <meta name="theme-color" content="#667eea">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + Vue + TS</title>
-    <meta name="description" content="Projet Normandie Demo">
-    <link rel="manifest" href="/manifest.json" />
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+    <title>My Vue Application</title>
+</head>
+<body>
+<div id="app"></div>
+<script type="module" src="/src/main.ts"></script>
+
+<!-- Fallback for browsers without JavaScript -->
+<noscript>
+    <div style="text-align: center; padding: 2rem; font-family: Arial, sans-serif;">
+        <h1>JavaScript Required</h1>
+        <p>This application requires JavaScript to function properly.</p>
+        <p>Please enable JavaScript in your browser settings and reload the page.</p>
+    </div>
+</noscript>
+</body>
 </html>

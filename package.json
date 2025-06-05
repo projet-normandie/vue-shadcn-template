@@ -12,7 +12,13 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "pwa:build": "vite build --mode=production",
+    "pwa:preview": "vite preview --host",
+    "pwa:analyze": "vite-bundle-analyzer dist",
+    "pwa:test": "start-server-and-test 'npm run preview' http://localhost:4173 'echo PWA test server running'",
+    "icons:generate": "pwa-asset-generator public/logo.svg public --background '#ffffff' --theme-color '#ffffff'",
+    "lighthouse": "lighthouse http://localhost:4173 --output html --output-path ./lighthouse-report.html --chrome-flags='--headless'"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.4",
@@ -36,6 +42,7 @@
     "vue-i18n": "^11.1.5",
     "vue-router": "^4.5.1",
     "vue-sonner": "^1.3.2",
+    "workbox-window": "^7.3.0",
     "zod": "^3.24.4"
   },
   "devDependencies": {
@@ -52,6 +59,7 @@
     "eslint-plugin-vue": "^10.1.0",
     "typescript": "~5.7.2",
     "vite": "^6.3.1",
+    "vite-plugin-pwa": "^1.0.0",
     "vue-tsc": "^2.2.8"
   }
 }

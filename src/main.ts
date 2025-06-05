@@ -8,6 +8,7 @@ import authPlugin from './plugins/auth'
 import analyticsPlugin from './plugins/analytics'
 import axiosInterceptor from './plugins/axios-interceptor'
 import authDirective from './directives/auth.directive'
+import pwaPlugin from './plugins/pwa'
 
 
 const app = createApp(App)
@@ -20,6 +21,7 @@ const app = createApp(App)
     .use(analyticsPlugin, { router })
     // Authorization directive
     .use(authDirective)
+    .use(pwaPlugin)
 
 // Setup Axios interceptors
 axiosInterceptor.setup()
