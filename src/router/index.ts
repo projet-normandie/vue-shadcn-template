@@ -17,6 +17,15 @@ const routes: Array<RouteRecordRaw> = [
         component: Home
     },
     {
+        path: '/pwa-settings',
+        name: 'PWASettings',
+        component: () => import(/* webpackChunkName: "pwa" */ '@/views/PWASettings.vue'),
+        meta: {
+            title: 'PWA Settings',
+            requiresAuth: false
+        }
+    },
+    {
         path: '/articles',
         name: 'ArticleList',
         component: () => import(/* webpackChunkName: "article" */ '@/views/article/ArticleList.vue'),

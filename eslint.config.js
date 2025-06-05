@@ -14,6 +14,7 @@ export default [
     ignores: [
       '**/node_modules/**',
       '**/dist/**',
+      '**/dev-dist/**',
       '**/dist-ssr/**',
       '**/coverage/**',
       '**/public/**',

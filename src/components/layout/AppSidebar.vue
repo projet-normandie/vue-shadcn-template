@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Home, HelpCircle, Shield, Eye, FileText, Mail, Heart, Scale, Video, TestTube } from "lucide-vue-next"
+import { Home, HelpCircle, Shield, Eye, FileText, Mail, Heart, Scale, Video, TestTube, Smartphone } from "lucide-vue-next"
 import {
     Sidebar,
     SidebarContent,
@@ -68,6 +68,14 @@ watch(() => router.currentRoute.value.path, () => {
                 </RouterLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <RouterLink to="/pwa-settings">
+                    <Smartphone />
+                      <span>PWA Settings</span>
+                  </RouterLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>
