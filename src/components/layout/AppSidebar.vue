@@ -141,27 +141,6 @@ watch(() => router.currentRoute.value.path, () => {
                 </RouterLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <a href="#" class="text-sm">
-                  {{ t('layout.sidebar.links.documentation') }}
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <a href="#" class="text-sm">
-                  {{ t('layout.sidebar.links.help') }}
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <a href="#" class="text-sm">
-                  {{ t('layout.sidebar.links.support') }}
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>

@@ -66,10 +66,6 @@ onMounted(() => {
       </div>
 
       <div class="flex items-center gap-2">
-        <nav class="hidden md:flex items-center gap-4">
-          <a href="#" class="text-sm font-medium hover:underline">{{ t('layout.header.help') }}</a>
-          <a href="#" class="text-sm font-medium hover:underline">{{ t('layout.header.documentation') }}</a>
-        </nav>
 
         <!-- Language Selector -->
         <LanguageSelector />

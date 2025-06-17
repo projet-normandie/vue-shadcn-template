@@ -65,8 +65,6 @@ export default {
     },
     layout: {
         header: {
-            help: 'Aide',
-            documentation: 'Documentation',
             login: 'Connexion',
             register: 'Inscription',
             profile: 'Profil',
@@ -86,9 +84,6 @@ export default {
             title: 'Application',
             links: {
                 title: 'Liens utiles',
-                documentation: 'Documentation',
-                help: 'Aide',
-                support: 'Support'
             }
         }
     },
