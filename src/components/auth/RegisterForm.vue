@@ -288,7 +288,7 @@ const handleRegister = async () => {
     <CardFooter class="flex justify-center">
       <p class="text-sm text-muted-foreground">
         {{ t('auth.register.alreadyHaveAccount') }}
-        <RouterLink to="/login" class="text-primary hover:underline">
+        <RouterLink :to="{name: 'Login'}" class="text-primary hover:underline">
           {{ t('auth.register.loginLink') }}
         </RouterLink>
       </p>

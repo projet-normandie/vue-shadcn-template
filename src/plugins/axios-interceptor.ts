@@ -85,7 +85,7 @@ export default {
                             // Show logout notification only once
                             toastService.error('Session Expired', 'Please log in again')
 
-                            router.push('/login')
+                            router.push({name: 'Login'});
 
                             // Reset the flag after a delay
                             setTimeout(() => {
@@ -118,7 +118,7 @@ export default {
                                 // Show logout notification only once
                                 toastService.error('Session Expired', 'Please log in again')
 
-                                router.push('/login')
+                                router.push({name: 'Login'});
 
                                 // Reset the flag after a delay
                                 setTimeout(() => {
@@ -139,7 +139,7 @@ export default {
                             // Show logout notification only once
                             toastService.error('Session Expired', 'Please log in again')
 
-                            router.push('/login')
+                            router.push({name: 'Login'});
 
                             // Reset the flag after a delay
                             setTimeout(() => {

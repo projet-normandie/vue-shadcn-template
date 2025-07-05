@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import AppLayout from '@/components/layout/AppLayout.vue'
 import { Toaster } from '@/components/ui/sonner'
 </script>
 
 <template>
-  <AppLayout>
-    <RouterView />
-  </AppLayout>
+  <RouterView />
   <Toaster
       :richColors="true"
       :expand="true"

@@ -37,7 +37,7 @@ watch(() => router.currentRoute.value.path, () => {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <RouterLink to="/">
+                <RouterLink :to="{name: 'Home'}">
                   <Home />
                   <span>{{ t('menu.home') }}</span>
                 </RouterLink>
@@ -54,7 +54,7 @@ watch(() => router.currentRoute.value.path, () => {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <RouterLink to="/quill-test">
+                <RouterLink :to="{name: 'QuillTest'}">
                   <TestTube />
                   <span>Quill Editor Test</span>
                 </RouterLink>
@@ -62,7 +62,7 @@ watch(() => router.currentRoute.value.path, () => {
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <RouterLink to="/video-players">
+                <RouterLink :to="{name: 'VideoPlayers'}">
                   <Video />
                   <span>Video Players Demo</span>
                 </RouterLink>
@@ -70,7 +70,7 @@ watch(() => router.currentRoute.value.path, () => {
             </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <RouterLink to="/pwa-settings">
+                  <RouterLink :to="{name: 'PwaSettings'}">
                     <Smartphone />
                       <span>PWA Settings</span>
                   </RouterLink>
@@ -87,7 +87,7 @@ watch(() => router.currentRoute.value.path, () => {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <RouterLink to="/faq">
+                <RouterLink :to="{name: 'Faq'}">
                   <HelpCircle />
                   <span>FAQ</span>
                 </RouterLink>
@@ -95,7 +95,7 @@ watch(() => router.currentRoute.value.path, () => {
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <RouterLink to="/rules">
+                <RouterLink :to="{name: 'Rules'}">
                   <Shield />
                   <span>Rules</span>
                 </RouterLink>
@@ -103,7 +103,7 @@ watch(() => router.currentRoute.value.path, () => {
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <RouterLink to="/privacy">
+                <RouterLink :to="{name: 'Privacy'}">
                   <Eye />
                   <span>Privacy</span>
                 </RouterLink>
@@ -111,7 +111,7 @@ watch(() => router.currentRoute.value.path, () => {
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <RouterLink to="/terms">
+                <RouterLink :to="{name: 'Terms'}">
                   <FileText />
                   <span>Terms</span>
                 </RouterLink>
@@ -119,7 +119,7 @@ watch(() => router.currentRoute.value.path, () => {
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <RouterLink to="/contact">
+                <RouterLink :to="{name: 'Contact'}">
                   <Mail />
                   <span>Contact</span>
                 </RouterLink>
@@ -127,7 +127,7 @@ watch(() => router.currentRoute.value.path, () => {
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <RouterLink to="/about">
+                <RouterLink :to="{name: 'About'}">
                   <Heart />
                   <span>About</span>
                 </RouterLink>
@@ -135,7 +135,7 @@ watch(() => router.currentRoute.value.path, () => {
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <RouterLink to="/legal">
+                <RouterLink :to="{name: 'Legal'}">
                   <Scale />
                   <span>Legal</span>
                 </RouterLink>

@@ -239,7 +239,7 @@ const handleSubmit = async () => {
     </CardContent>
 
     <CardFooter class="flex justify-center">
-      <RouterLink to="/login" class="text-primary hover:underline text-sm">
+      <RouterLink :to="{name: 'Login'}" class="text-primary hover:underline text-sm">
         {{ t('auth.forgotPassword.backToLogin') }}
       </RouterLink>
     </CardFooter>

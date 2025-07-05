@@ -16,21 +16,21 @@ const { t } = useI18n();
       <nav class="flex flex-wrap items-center justify-center gap-3 md:gap-4">
         <!-- Legally required pages -->
         <RouterLink
-            to="/legal"
+            :to="{name: 'Legal'}"
             class="hover:underline hover:text-foreground transition-colors"
         >
           {{ t('layout.footer.legal') }}
         </RouterLink>
 
         <RouterLink
-            to="/privacy"
+            :to="{name: 'Privacy'}"
             class="hover:underline hover:text-foreground transition-colors"
         >
           {{ t('layout.footer.privacy') }}
         </RouterLink>
 
         <RouterLink
-            to="/terms"
+            :to="{name: 'Terms'}"
             class="hover:underline hover:text-foreground transition-colors"
         >
           {{ t('layout.footer.terms') }}
@@ -38,14 +38,14 @@ const { t } = useI18n();
 
         <!-- Important pages -->
         <RouterLink
-            to="/contact"
+            :to="{name: 'Contact'}"
             class="hover:underline hover:text-foreground transition-colors"
         >
           {{ t('layout.footer.contact') }}
         </RouterLink>
 
         <RouterLink
-            to="/rules"
+            :to="{name: 'Rules'}"
             class="hover:underline hover:text-foreground transition-colors"
         >
           {{ t('layout.footer.rules') }}
@@ -53,7 +53,7 @@ const { t } = useI18n();
 
         <!-- Optional pages -->
         <RouterLink
-            to="/about"
+            :to="{name: 'About'}"
             class="hover:underline hover:text-foreground transition-colors"
         >
           {{ t('layout.footer.about') }}

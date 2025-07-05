@@ -126,14 +126,14 @@ const handleLogin = async () => {
     </CardContent>
 
     <CardFooter class="flex flex-col space-y-4">
-      <RouterLink to="/forgot-password" class="text-primary text-sm hover:underline">
+      <RouterLink :to="{name: 'ForgotPassword'}" class="text-primary text-sm hover:underline">
         {{ t('auth.login.forgotPassword') }}
       </RouterLink>
 
       <div class="w-full border-t pt-4">
         <p class="text-sm text-center text-muted-foreground">
           {{ t('auth.login.noAccount') }}
-          <RouterLink to="/register" class="text-primary hover:underline ml-1">
+          <RouterLink :to="{name: 'Register'}" class="text-primary hover:underline ml-1">
             {{ t('auth.login.registerLink') }}
           </RouterLink>
         </p>

@@ -84,7 +84,7 @@ onMounted(() => {
   <div class="container mx-auto max-w-4xl px-4 py-8">
     <!-- Back button -->
     <RouterLink
-        to="/"
+        :to="{name: 'Home'}"
         class="inline-flex items-center gap-2 text-primary hover:underline mb-6"
     >
       <ArrowLeft class="h-4 w-4" />
@@ -153,7 +153,7 @@ onMounted(() => {
             {{ t('articles.notFound.description') }}
           </p>
           <Button asChild>
-            <RouterLink to="/">
+            <RouterLink :to="{name: 'Home'}">
               {{ t('articles.returnToHome') }}
             </RouterLink>
           </Button>

@@ -49,7 +49,7 @@ onMounted(() => {
     <div class="flex items-center justify-between">
       <h2 class="text-2xl font-bold">{{ t('articles.latest') }}</h2>
       <RouterLink
-          to="/articles"
+          :to="{name: 'ArticleList'}"
           class="text-primary hover:underline flex items-center gap-1"
       >
         {{ t('articles.viewAll') }}

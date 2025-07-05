@@ -180,7 +180,7 @@ const clearContent = () => {
       <!-- Not logged in message -->
       <div v-if="!isAuthenticated" class="flex items-center gap-2 text-sm p-3 bg-amber-50 text-amber-700 rounded-md mb-4">
         <AlertCircle class="h-5 w-5 flex-shrink-0" />
-        <p>{{ t('comments.loginRequired') }} <RouterLink to="/login" class="font-medium underline">{{ t('comments.loginLink') }}</RouterLink></p>
+        <p>{{ t('comments.loginRequired') }} <RouterLink :to="{name: 'Login'}" class="font-medium underline">{{ t('comments.loginLink') }}</RouterLink></p>
       </div>
 
       <!-- Error message -->

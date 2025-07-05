@@ -74,7 +74,7 @@ onMounted(() => {
         <!-- Login link when user is not authenticated -->
         <RouterLink
             v-if="!isAuthenticated"
-            to="/login"
+            :to="{name: 'Login'}"
             class="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors"
         >
           <LogIn class="h-5 w-5" />
@@ -106,7 +106,7 @@ onMounted(() => {
 
               <div class="py-1">
                 <RouterLink
-                    to="/profile"
+                    :to="{name: 'Profile'}"
                     class="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
                     @click="showDropdown = false"
                 >

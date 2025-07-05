@@ -1,6 +1,5 @@
-// src/i18n/index.ts - Configuration Vue I18n
+// src/i18n/index.ts - Configuration i18n pour routes imbriquées
 import { createI18n } from 'vue-i18n'
-import { useStorage } from '@vueuse/core'
 import { updateApiLocale } from '@/lib/axios'
 import { computed } from 'vue'
 
@@ -20,22 +19,33 @@ export const availableLocales: Record<SupportedLocale, string> = {
 // Get browser language or fallback
 const getBrowserLanguage = (): SupportedLocale => {
     const browserLang = navigator.language.split('-')[0]
-    return (browserLang as SupportedLocale) in availableLocales ? (browserLang as SupportedLocale) : 'en'
+    return (browserLang as SupportedLocale) in availableLocales ?
+        (browserLang as SupportedLocale) : 'en'
+}
+
+// Get initial locale from URL, storage or browser
+const getInitialLocale = (): SupportedLocale => {
+    // Try to get from URL path first
+    const pathSegments = window.location.pathname.split('/')
+    const urlLang = pathSegments[1] as SupportedLocale
+
+    if (['fr', 'en'].includes(urlLang)) {
+        return urlLang
+    }
+
+    // Fallback to storage or browser language
+    const savedLocale = localStorage.getItem('app-locale') as SupportedLocale
+    return savedLocale || getBrowserLanguage()
 }
 
 // Create the i18n instance
 const i18n = createI18n({
-    legacy: false, // Use Composition API mode
-    locale: getBrowserLanguage(),
+    legacy: false,
+    locale: getInitialLocale(),
     fallbackLocale: 'en',
-    messages: {
-        en,
-        fr
-    },
-    // Enable missing message warnings in development
+    messages: { en, fr },
     missingWarn: import.meta.env.DEV,
     fallbackWarn: import.meta.env.DEV,
-    // Date/time formats
     datetimeFormats: {
         en: {
             short: {
@@ -66,64 +76,53 @@ const i18n = createI18n({
             }
         }
     },
-    // Number formats
     numberFormats: {
         en: {
-            currency: {
-                style: 'currency',
-                currency: 'USD'
-            },
-            decimal: {
-                style: 'decimal',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }
+            currency: { style: 'currency', currency: 'USD' },
+            decimal: { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }
         },
         fr: {
-            currency: {
-                style: 'currency',
-                currency: 'EUR'
-            },
-            decimal: {
-                style: 'decimal',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }
+            currency: { style: 'currency', currency: 'EUR' },
+            decimal: { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }
         }
     }
 })
 
-// Composable for reactive i18n with persistence
+// Composable for reactive i18n
 export function useI18n() {
     const { locale, t, d, n, tm } = i18n.global
 
-    // Persistent locale storage
-    const persistentLocale = useStorage<SupportedLocale>('app-locale', getBrowserLanguage())
-
-    // Set initial locale from storage
-    locale.value = persistentLocale.value
-
-    // Update document language and API locale
+    // Update locale and persist
     const updateLocale = (newLocale: SupportedLocale) => {
         if (newLocale in availableLocales) {
             locale.value = newLocale
-            persistentLocale.value = newLocale
+            localStorage.setItem('app-locale', newLocale)
             document.documentElement.setAttribute('lang', newLocale)
             updateApiLocale(newLocale)
         }
     }
 
-    // Initialize
-    updateLocale(persistentLocale.value)
+    // Set locale (public API)
+    const setLocale = (newLocale: SupportedLocale) => {
+        updateLocale(newLocale)
+    }
+
+    // Get current locale from URL route if available
+    const getCurrentLocaleFromRoute = (): SupportedLocale => {
+        const pathSegments = window.location.pathname.split('/')
+        const urlLang = pathSegments[1] as SupportedLocale
+        return (['fr', 'en'].includes(urlLang)) ? urlLang : locale.value
+    }
 
     return {
         locale: computed(() => locale.value),
         t,
-        d, // Date formatter
-        n, // Number formatter
-        tm, // Translation messages getter
-        setLocale: updateLocale,
-        availableLocales
+        d,
+        n,
+        tm,
+        setLocale,
+        availableLocales,
+        getCurrentLocaleFromRoute
     }
 }
 

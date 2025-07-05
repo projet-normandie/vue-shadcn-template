@@ -39,7 +39,7 @@ const goBack = () => {
             {{ t('error.notFound.back') }}
           </Button>
           <Button asChild variant="outline">
-            <RouterLink to="/">
+            <RouterLink :to="{name: 'Home'}">
               {{ t('error.notFound.home') }}
             </RouterLink>
           </Button>
