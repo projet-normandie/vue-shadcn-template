@@ -36,7 +36,9 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from '@/core/i18n';
+import { useSEO } from '@/shared/composables/useSEO'
 import {
   Card,
   CardDescription,
@@ -44,5 +46,15 @@ import {
   CardTitle,
 } from '@/shared/components/ui/card'
 import LatestArticles from '@/features/article/components/LatestArticles.vue'
+
 const { t } = useI18n();
+
+// SEO Configuration for Home page
+const seoData = computed(() => ({
+  title: t('app.home.seo.title'),
+  description: t('app.home.seo.description'),
+  ogType: 'website'
+}))
+
+useSEO(seoData)
 </script>

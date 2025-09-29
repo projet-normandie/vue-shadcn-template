@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createHead } from '@unhead/vue/client'
 import './assets/main.css'
 import App from './App.vue'
 import router from './core/router'
@@ -11,7 +12,10 @@ import authDirective from '@/features/auth/directives/auth.directive'
 import pwaPlugin from './features/pwa/plugins/pwa.ts'
 
 
+const head = createHead()
+
 const app = createApp(App)
+    .use(head)
     .use(router)
     .use(pinia)
     .use(i18n) // Use Vue I18n instead of custom plugin
