@@ -1,14 +1,14 @@
 <!-- src/views/VideoPlayerDemo.vue -->
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VideoPlayer, YouTubePlayer, TwitchPlayer } from '@/components/media'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Badge } from '@/components/ui/badge'
+import { VideoPlayer, YouTubePlayer, TwitchPlayer } from '@/shared/components/media'
+import { Button } from '@/shared/components/ui/button'
+import { Input } from '@/shared/components/ui/input'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components/ui/tabs'
+import { Badge } from '@/shared/components/ui/badge'
 import { Play, Copy, Video } from 'lucide-vue-next'
-import toastService from '@/services/toast.service'
+import toastService from '@/shared/services/toast.service'
 
 // Demo URLs and IDs
 const demoSources = {

@@ -1,7 +1,7 @@
 // src/views/NotFound.vue
 <script setup lang="ts">
-import { Button } from '@/components/ui/button'
-import { useI18n } from '@/i18n'
+import { Button } from '@/shared/components/ui/button'
+import { useI18n } from '@/core/i18n'
 import { useRouter } from 'vue-router'
 
 const { t } = useI18n()

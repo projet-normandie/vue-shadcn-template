@@ -1,25 +1,25 @@
 // src/views/Profile.vue
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { useAuthStore } from '@/stores/auth';
-import { useI18n } from '@/i18n';
+import { useAuthStore } from '@/features/auth/stores/auth.ts';
+import { useI18n } from '@/core/i18n';
 import {
   Card,
   CardContent,
-} from '@/components/ui/card';
+} from '@/shared/components/ui/card';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger
-} from '@/components/ui/accordion';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+} from '@/shared/components/ui/accordion';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components/ui/tabs';
 import { User, Upload, KeyRound } from 'lucide-vue-next';
-import ProfileInfoTab from '@/components/profile/ProfileInfoTab.vue';
-import ProfileAvatarTab from '@/components/profile/ProfileAvatarTab.vue';
-import ProfilePasswordTab from '@/components/profile/ProfilePasswordTab.vue';
-import UserRoleStatus from '@/components/auth/UserRoleStatus.vue';
-import UserAvatar from '@/components/user/UserAvatar.vue';
+import ProfileInfoTab from '@/features/auth/components/profile/ProfileInfoTab.vue';
+import ProfileAvatarTab from '@/features/auth/components/profile/ProfileAvatarTab.vue';
+import ProfilePasswordTab from '@/features/auth/components/profile/ProfilePasswordTab.vue';
+import UserRoleStatus from '@/features/auth/components/UserRoleStatus.vue';
+import UserAvatar from '@/features/auth/components/UserAvatar.vue';
 
 // Get stores and translations
 const authStore = useAuthStore();

@@ -1,14 +1,14 @@
 import { createApp } from 'vue'
 import './assets/main.css'
 import App from './App.vue'
-import router from './router'
-import pinia from './stores'
-import i18n from './i18n' // Import Vue I18n instance
-import authPlugin from './plugins/auth'
-import analyticsPlugin from './plugins/analytics'
-import axiosInterceptor from './plugins/axios-interceptor'
-import authDirective from './directives/auth.directive'
-import pwaPlugin from './plugins/pwa'
+import router from './core/router'
+import pinia from './core/stores'
+import i18n from './core/i18n' // Import Vue I18n instance
+import authPlugin from './features/auth/plugins/auth.ts'
+import analyticsPlugin from '@/core/plugins/analytics'
+import axiosInterceptor from '@/core/plugins/axios-interceptor'
+import authDirective from '@/features/auth/directives/auth.directive'
+import pwaPlugin from './features/pwa/plugins/pwa.ts'
 
 
 const app = createApp(App)

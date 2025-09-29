@@ -6,7 +6,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle
-} from '@/components/ui/card'
+} from '@/shared/components/ui/card'
 
 // Terms sections data for French
 const termsData = {

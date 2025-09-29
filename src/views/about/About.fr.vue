@@ -6,8 +6,8 @@ import {
   CardContent,
   CardHeader,
   CardTitle
-} from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+} from '@/shared/components/ui/card'
+import { Badge } from '@/shared/components/ui/badge'
 
 // About sections data for French
 const aboutData = {

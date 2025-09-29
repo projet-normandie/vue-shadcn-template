@@ -1,11 +1,11 @@
 <!-- src/views/PWASettings.vue -->
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Separator } from '@/components/ui/separator'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { Button } from '@/shared/components/ui/button'
+import { Badge } from '@/shared/components/ui/badge'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components/ui/tabs'
+import { Separator } from '@/shared/components/ui/separator'
 import {
     Settings,
     Smartphone,
@@ -19,9 +19,9 @@ import {
     Trash2
 } from 'lucide-vue-next'
 
-import PWAStatus from '@/components/pwa/PWAStatus.vue'
-import OfflineIndicator from '@/components/pwa/OfflineIndicator.vue'
-import { usePWA } from '@/composables/usePWA'
+import PWAStatus from '@/features/pwa/components/PWAStatus.vue'
+import OfflineIndicator from '@/features/pwa/components/OfflineIndicator.vue'
+import { usePWA } from '@/features/pwa/composables/usePWA.ts'
 
 const {
     isPWA,

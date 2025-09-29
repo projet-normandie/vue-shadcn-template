@@ -36,13 +36,13 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from '@/i18n';
+import { useI18n } from '@/core/i18n';
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import LatestArticles from '@/components/article/LatestArticles.vue'
+} from '@/shared/components/ui/card'
+import LatestArticles from '@/features/article/components/LatestArticles.vue'
 const { t } = useI18n();
 </script>

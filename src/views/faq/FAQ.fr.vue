@@ -6,13 +6,13 @@ import {
   CardContent,
   CardHeader,
   CardTitle
-} from '@/components/ui/card'
+} from '@/shared/components/ui/card'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger
-} from '@/components/ui/accordion'
+} from '@/shared/components/ui/accordion'
 
 // FAQ data for French
 const faqData = [

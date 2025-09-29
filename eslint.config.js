@@ -19,7 +19,7 @@ export default [
       '**/coverage/**',
       '**/public/**',
       '**/*.d.ts',
-      '**/src/components/ui/**'
+      '**/src/shared/components/ui/**'
     ],
   },
 

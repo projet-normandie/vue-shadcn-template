@@ -6,8 +6,8 @@ import {
   CardContent,
   CardHeader,
   CardTitle
-} from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+} from '@/shared/components/ui/card'
+import { Badge } from '@/shared/components/ui/badge'
 
 // Legal information data for French
 const legalData = {

@@ -1,19 +1,19 @@
 // src/views/EditorTest.vue
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Switch } from '@/components/ui/switch'
-import { Label } from '@/components/ui/label'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { Button } from '@/shared/components/ui/button'
+import { Input } from '@/shared/components/ui/input'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components/ui/tabs'
+import { Switch } from '@/shared/components/ui/switch'
+import { Label } from '@/shared/components/ui/label'
 import {
     QuillEditor,
     AdvancedQuillEditor,
     toolbarConfigs,
     type QuillEditorInstance,
     type AdvancedQuillEditorInstance
-} from '@/components/ui/editor'
+} from '@/shared/components/ui/editor'
 import {
     FileText,
     Image as ImageIcon,
@@ -26,7 +26,7 @@ import {
     TestTube,
     Lightbulb
 } from 'lucide-vue-next'
-import toastService from '@/services/toast.service'
+import toastService from '@/shared/services/toast.service'
 import { Quill } from 'quill'
 import { DeltaOperation } from 'quill'
 
