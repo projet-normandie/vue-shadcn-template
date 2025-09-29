@@ -93,6 +93,15 @@ const routes: Array<RouteRecordRaw> = [
                         meta: { requiresAuth: true }
                     },
                     {
+                        path: 'settings',
+                        name: 'Settings',
+                        component: () => import('@/views/Settings.vue'),
+                        meta: {
+                            title: 'Settings',
+                            description: 'Configure your preferences and account settings'
+                        }
+                    },
+                    {
                         path: 'quill-test',
                         name: 'QuillTest',
                         component: () => import(/* webpackChunkName: "editor-test" */ '@/views/QuillTest.vue'),

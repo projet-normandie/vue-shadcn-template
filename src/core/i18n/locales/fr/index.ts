@@ -3,17 +3,19 @@
 import common from './common.ts'
 import app from './app.ts'
 import layout from './layout.ts'
-import article from '@/features/article/i18n/locales/fr/article.ts'
-import auth from '@/features/auth/i18n/locales/fr/auth.ts'
-import pwa from '@/features/pwa/i18n/locales/fr/pwa.ts'
+import articleTranslations from '@/features/article/i18n/locales/fr/index.ts'
+import authTranslations from '@/features/auth/i18n/locales/fr/index.ts'
+import pwaTranslations from '@/features/pwa/i18n/locales/fr/index.ts'
+import themeTranslations from '@/features/theme/i18n/locales/fr/index.ts'
 
 export default {
     common,
     layout,
     app,
-    article,
-    auth,
-    pwa,
+    ...articleTranslations,
+    ...authTranslations,
+    ...pwaTranslations,
+    ...themeTranslations,
     menu: {
         home: 'Accueil',
         inbox: 'Boîte de réception',
@@ -23,6 +25,12 @@ export default {
     },
     language: {
         selector: 'Langue'
+    },
+    settings: {
+        subtitle: 'Personnalisez votre expérience et vos préférences',
+        tabs: {
+            appearance: 'Apparence',
+        },
     },
     error: {
         notFound: {

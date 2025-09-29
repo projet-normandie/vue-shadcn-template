@@ -6,7 +6,7 @@ import { useAuthStore } from '@/features/auth/stores/auth.ts';
 import { SidebarTrigger } from '@/shared/components/ui/sidebar';
 import LanguageSelector from '@/shared/components/common/LanguageSelector.vue';
 import { useI18n } from '@/core/i18n';
-import ThemeSwitcher from "@/shared/components/common/ThemeSwitcher.vue";
+import ThemeSwitcher from "@/features/theme/components/ThemeSwitcher.vue";
 import UserAvatar from '@/features/auth/components/UserAvatar.vue';
 
 const authStore = useAuthStore();

@@ -1,4 +1,4 @@
-<!-- src/components/common/ThemeSwitcher.vue -->
+<!-- src/features/theme/components/ThemeSwitcher.vue -->
 <script setup lang="ts">
 import { useColorMode, useCycleList } from '@vueuse/core'
 import { watchEffect } from 'vue'
