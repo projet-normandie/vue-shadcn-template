@@ -25,13 +25,21 @@ const routes: Array<RouteRecordRaw> = [
                 path: '',
                 redirect: () => {
                     const savedLocale = localStorage.getItem('app-locale')
-                    const browserLang = navigator.language.split('-')[0]
-                    const defaultLocale = savedLocale || (browserLang === 'fr' ? 'fr' : 'en')
+                    const fullLang = navigator.language.toLowerCase()
+                    const browserLang = fullLang.split('-')[0]
+                    
+                    // Handle special cases for multi-regional languages
+                    let detectedLang = browserLang
+                    if (fullLang.startsWith('pt-br') || fullLang === 'pt-br') detectedLang = 'pt-br'
+                    if (fullLang.startsWith('zh-cn') || fullLang === 'zh-cn' || fullLang === 'zh') detectedLang = 'zh-cn'
+                    
+                    const supportedLocales = ['fr', 'en', 'ja', 'it', 'pt-br', 'zh-cn', 'es']
+                    const defaultLocale = savedLocale || (supportedLocales.includes(detectedLang) ? detectedLang : 'en')
                     return `/${defaultLocale}`
                 }
             },
             {
-                path: ':lang(fr|en)',
+                path: ':lang(fr|en|ja|it|pt-br|zh-cn|es)',
                 component: ViewLayout,
                 children: [
                     {
@@ -202,7 +210,7 @@ router.beforeEach((to, _from, next) => {
     const lang = to.params.lang as SupportedLocale
 
     // If we have a language in the route, sync it with i18n
-    if (lang && ['fr', 'en'].includes(lang)) {
+    if (lang && ['fr', 'en', 'ja', 'it', 'pt-br', 'zh-cn', 'es'].includes(lang)) {
         setLocale(lang)
     }
 
